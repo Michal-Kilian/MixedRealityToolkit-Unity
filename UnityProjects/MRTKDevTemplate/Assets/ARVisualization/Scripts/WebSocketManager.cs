@@ -10,11 +10,15 @@ using Newtonsoft.Json;
 public class WebSocketManager : MonoBehaviour
 {
     [SerializeField] private bool shouldConnect = false;
+    [SerializeField] private FlameGraphManager flameGraphManager;
+    [SerializeField] private UIManager uiManager;
 
     private ClientWebSocket ws;
 
     private readonly Queue<string> messageQueue = new();
     private CancellationTokenSource cts;
+
+    public bool IsConnected => ws != null && ws.State == WebSocketState.Open;
 
     void Awake()
     {
@@ -65,23 +69,48 @@ public class WebSocketManager : MonoBehaviour
 
             switch(envelope.Type)
             {
-                case "projectStructure":
+                case MessageType.PROJECT_STRUCTURE:
                     var structure = envelope.Data.ToObject<ProjectStructure>();
                     Debug.Log($"Received project: {structure.ProjectName} with {structure.Packages.Count} packages");
                     ProjectCity.Instance.RebuildCity(structure);
                     break;
 
-                case "executionSample":
+                case MessageType.EXECUTION_SAMPLE:
                     var sample = envelope.Data.ToObject<ExecutionSample>();
                     ProjectCity.Instance.OnExecutionSample(sample);
+                    flameGraphManager.AddSample(sample);
                     break;
 
-                case "projectSnapshot":
-                    Debug.Log("Received projectSnapshot");
+                case MessageType.PROJECT_SNAPSHOT:
+                    var snapshot = envelope.Data.ToObject<ProjectSnapshot>();
+                    Debug.Log($"Received project snapshot: {snapshot}");
                     break;
 
-                case "openTabs":
-                    Debug.Log("Received OpenTabs");
+                case MessageType.OPEN_TABS:
+                    var openTabs = envelope.Data.ToObject<OpenTabs>();
+                    Debug.Log($"Received open tabs: {openTabs}");
+                    break;
+
+                case MessageType.PROJECT_OUTDATED:
+                    uiManager.OnProjectOutdatedReceived();
+                    break;
+
+                case MessageType.COMMAND:
+                    var command = envelope.Data.ToObject<CommandMessage>();
+                    switch (command.Command)
+                    {
+                        case CommandType.PAUSE:
+                            Debug.Log("Pause command received");
+                            Time.timeScale = 0f;
+                            ProjectCity.Instance.Paused = true;
+                            break;
+
+                        case CommandType.RESUME:
+                            Debug.Log("Resume command received");
+                            Time.timeScale = 1f;
+                            ProjectCity.Instance.Paused = false;
+                            break;
+                    }
                     break;
 
                 default:
@@ -149,5 +178,12 @@ public class WebSocketManager : MonoBehaviour
         }
 
         cts?.Cancel();
+    }
+
+    public async Task SendAsync(string json)
+    {
+        if (!IsConnected) return;
+        byte[] data = Encoding.UTF8.GetBytes(json);
+        await ws.SendAsync(new ArraySegment<byte>(data), WebSocketMessageType.Text, true, CancellationToken.None);
     }
 }

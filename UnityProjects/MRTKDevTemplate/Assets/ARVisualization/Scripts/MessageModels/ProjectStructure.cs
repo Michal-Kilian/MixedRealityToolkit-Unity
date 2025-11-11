@@ -1,24 +1,6 @@
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-
-[Serializable]
-public class WebSocketMessage
-{
-    [JsonProperty("type")]
-    public string Type { get; set; }
-
-    [JsonProperty("source")]
-    public string Source { get; set; }
-
-    [JsonProperty("timestamp")]
-    public long Timestamp { get; set; }
-
-    [JsonProperty("data")]
-    public JObject Data { get; set; }
-}
 
 [Serializable]
 public class ProjectStructure
@@ -842,7 +824,7 @@ public class ProjectStructure
     }
 }
 
-    [Serializable]
+[Serializable]
 public class PackageNode
 {
     [JsonProperty("name")]
@@ -896,6 +878,9 @@ public class FileNode
 [Serializable]
 public class ClassNode
 {
+    [JsonProperty("id")]
+    public string ID { get; set; } = "id";
+
     [JsonProperty("name")]
     public string Name { get; set; }
 
@@ -1015,28 +1000,5 @@ public class FieldNode
         Type = type;
         Annotations = annotations ?? new List<string>();
         Modifiers = modifiers ?? new List<string>();
-    }
-}
-
-[Serializable]
-public class ExecutionSample
-{
-    [JsonProperty("timestamp")]
-    public long TimeStamp { get; set; }
-
-    [JsonProperty("frames")]
-    public List<Frame> Frames { get; set; }
-
-    [Serializable]
-    public class Frame
-    {
-        [JsonProperty("className")]
-        public string ClassName { get; set; }
-
-        [JsonProperty("method")]
-        public string Method { get; set; }
-
-        [JsonProperty("line")]
-        public int Line { get; set; }
     }
 }
