@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class HeatmapMode : IVisualizationMode
 {
-    private readonly float decayRate = 0.5f;
+    private readonly float decayDuration = 10f;
+    private float decayRate;
     private Color heatColor = Color.white;
 
     private Dictionary<string, GameObject> _methodFloors;
@@ -15,6 +16,8 @@ public class HeatmapMode : IVisualizationMode
     {
         _methodFloors = methodFloors;
         _baseColors = baseColors;
+
+        decayRate = 1f / decayDuration;
     }
 
     public void OnExecutionSample(ExecutionSample sample)

@@ -78,7 +78,7 @@
                     "path": "<Keyboard>/s",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": ";MRTK3",
                     "action": "Move Depth",
                     "isComposite": false,
                     "isPartOfComposite": true

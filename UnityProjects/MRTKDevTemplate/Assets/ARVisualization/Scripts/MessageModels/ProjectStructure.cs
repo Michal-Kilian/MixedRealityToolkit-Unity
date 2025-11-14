@@ -17,7 +17,10 @@ public class ProjectStructure
         Packages = new List<PackageNode>();
     }
 
-    public ProjectStructure(string projectName, List<PackageNode> packages)
+    public ProjectStructure(
+        string projectName,
+        List<PackageNode> packages
+    )
     {
         ProjectName = projectName;
         Packages = packages;
@@ -836,7 +839,10 @@ public class PackageNode
     [JsonIgnore]
     public List<PackageNode> SubPackages { get; set; }
 
-    public PackageNode(string name, List<FileNode> files)
+    public PackageNode(
+        string name,
+        List<FileNode> files
+    )
     {
         Name = name;
         Files = files;
@@ -864,7 +870,14 @@ public class FileNode
     [JsonProperty("classes")]
     public List<ClassNode> Classes { get; set; }
 
-    public FileNode(string name, string path, string packageName, int importCount, int lineCount, List<ClassNode> classes)
+    public FileNode(
+        string name,
+        string path,
+        string packageName,
+        int importCount,
+        int lineCount,
+        List<ClassNode> classes
+    )
     {
         Name = name;
         Path = path;
@@ -929,7 +942,8 @@ public class ClassNode
         int fieldCount,
         List<MethodNode> methods,
         List<FieldNode> fields,
-        List<ClassNode> innerClasses)
+        List<ClassNode> innerClasses
+    )
     {
         Name = name;
         IsInterface = isInterface;
@@ -967,8 +981,26 @@ public class MethodNode
     [JsonProperty("lineCount")]
     public int LineCount { get; set; }
 
-    public MethodNode(string name, string returnType, List<string> parameters,
-        List<string> annotations, List<string> modifiers, int lineCount)
+    [JsonProperty("path")]
+    public string Path { get; set; }
+
+    [JsonProperty("lineStart")]
+    public int LineStart { get; set; }
+
+    [JsonProperty("lineEnd")]
+    public int LineEnd { get; set; }
+
+    public MethodNode(
+        string name,
+        string returnType,
+        List<string> parameters,
+        List<string> annotations,
+        List<string> modifiers,
+        int lineCount = 0,
+        string path = "",
+        int lineStart = 0,
+        int lineEnd = 0
+    )
     {
         Name = name;
         ReturnType = returnType;
@@ -976,6 +1008,9 @@ public class MethodNode
         Annotations = annotations;
         Modifiers = modifiers;
         LineCount = lineCount;
+        Path = path;
+        LineStart = lineStart;
+        LineEnd = lineEnd;
     }
 }
 
@@ -994,7 +1029,12 @@ public class FieldNode
     [JsonProperty("modifiers")]
     public List<string> Modifiers { get; set; }
 
-    public FieldNode(string name = "", string type = "", List<string> annotations = null, List<string> modifiers = null)
+    public FieldNode(
+        string name = "",
+        string type = "",
+        List<string> annotations = null,
+        List<string> modifiers = null
+    )
     {
         Name = name;
         Type = type;

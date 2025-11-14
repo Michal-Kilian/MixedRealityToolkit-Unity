@@ -1,3 +1,4 @@
+using MixedReality.Toolkit.SpatialManipulation;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -15,6 +16,10 @@ public class ProjectCity : MonoBehaviour
     [SerializeField] private float FloorGap = 0.002f;
     [SerializeField] private VisualizationModes VisualizationMode = VisualizationModes.Heatmap;
 
+    [SerializeField] private GameObject floorPrefab;
+
+    [SerializeField] private UIManager UIManager;
+
     private ProjectStructure _project;
     private readonly Dictionary<string, GameObject> _classBuildings = new();
     private readonly Dictionary<string, GameObject> _methodFloors = new();
@@ -29,15 +34,8 @@ public class ProjectCity : MonoBehaviour
 
     public bool Paused
     {
-        get
-        {
-            return paused;
-        }
-
-        set
-        {
-            paused = value;
-        }
+        get => paused;
+        set => paused = value;
     }
 
     private void Awake()
@@ -184,55 +182,38 @@ public class ProjectCity : MonoBehaviour
             
             for (int j = 0; j < methods.Count; j++)
             {
-                var method = methods[j];
+                MethodNode method = methods[j];
+
                 float rawFloorHeight = Mathf.Max(0.01f, method.LineCount * 0.001f);
                 float scaledFloorHeight = rawFloorHeight * perUnitScale;
-                
-                GameObject floor = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                floor.transform.SetParent(classGO.transform, false);
-                floor.transform.localScale = new(footprint, scaledFloorHeight, footprint);
-                floor.transform.localPosition = new(0f, currentHeight + scaledFloorHeight / 2f + FloorGap, 0f);
-                floor.name = $"{cls.Name}.{method.Name}";
-                
+
+                GameObject floorGO = Instantiate(floorPrefab, classGO.transform);
+                Floor floor = floorGO.GetComponent<Floor>();
+                floor.Initialize(
+                    path: method.Path,
+                    line: method.LineStart,
+                    packageName: pkg.Name,
+                    className: cls.Name,
+                    methodName: method.Name,
+                    lineCount: method.LineCount,
+                    footprint: footprint,
+                    scaledHeight: scaledFloorHeight,
+                    currentHeight: currentHeight,
+                    floorGap: FloorGap
+                );
+
                 Color baseColor = GetColorForPackage(pkg.Name);
                 float brightness = Mathf.Lerp(0.6f, 1.2f, (float)j / methods.Count);
                 Color floorColor = baseColor * brightness;
                 
                 var floorRenderer = floor.GetComponent<Renderer>();
                 floorRenderer.material.color = floorColor;
-                _baseColors[floor] = floorColor;
+                _baseColors[floorGO] = floorColor;
                 
-                _methodFloors[$"{pkg.Name}.{cls.Name}.{method.Name}"] = floor;
+                _methodFloors[$"{pkg.Name}.{cls.Name}.{method.Name}"] = floorGO;
                 
                 currentHeight += scaledFloorHeight + FloorGap;
             }
-
-            /*for (int j = 0; j < cls.MethodCount; j++)
-            {
-                var method = methods[j];
-                float rawFloorHeight = Mathf.Max(0.01f, method.LineCount * 0.001f);
-                float rootNormalized = Mathf.Sqrt(rawFloorHeight / maxRawHeight);
-                float scaledFloorHeight = rootNormalized * MaxBuildingHeight;
-
-                GameObject floor = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                floor.transform.SetParent(classGO.transform, false);
-                floor.transform.localScale = new(footprint, scaledFloorHeight, footprint);
-                floor.transform.localPosition = new(0f, currentHeight + scaledFloorHeight / 2f + FloorGap, 0f);
-                floor.name = $"{cls.Name}.{method.Name}";
-
-                Color baseColor = GetColorForPackage(pkg.Name);
-
-                float brightness = Mathf.Lerp(0.6f, 1.2f, (float)j / cls.MethodCount);
-                Color floorColor = baseColor * brightness;
-
-                var floorRenderer = floor.GetComponent<Renderer>();
-                floorRenderer.material.color = floorColor;
-                _baseColors[floor] = floorColor;
-
-                _methodFloors[$"{pkg.Name}.{cls.Name}.{method.Name}"] = floor;
-
-                currentHeight += scaledFloorHeight + FloorGap;
-            }*/
 
             if (!string.IsNullOrEmpty(cls.ID))
                 _classBuildings[cls.ID] = classGO;
@@ -278,6 +259,7 @@ public class ProjectCity : MonoBehaviour
 
     private void Update()
     {
+        if (paused) return;
         _activeMode?.Update();
     }
 

@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using TMPro;
 using UnityEngine;
 using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 
 public class UIManager : MonoBehaviour
 {
@@ -11,6 +12,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TMP_Text textMessage;
 
     private WebSocketManager wsManager;
+
+    private static readonly List<GameObject> activeContextMenus = new();
+    private static readonly List<GameObject> activeTooltips = new();
 
     private void Awake()
     {
@@ -40,16 +44,62 @@ public class UIManager : MonoBehaviour
     {
         HideNotification();
 
-        WebSocketMessage message = new()
+        await wsManager.SendMessage(
+            type: MessageType.REQUEST_PROJECT_STRUCTURE,
+            data: new JObject()
+        );
+    }
+
+    public async void OnOpenInIDEClicked(string methodPath, int line)
+    {
+        CommandMessage message = new()
         {
-            Type = MessageType.REQUEST_PROJECT_STRUCTURE,
-            Source = "Unity",
-            TimeStamp = DateTimeOffset.Now.ToUnixTimeMilliseconds(),
-            Data = new JObject()
+            Command = CommandType.OPEN_IN_IDE,
+            Path = methodPath,
+            Line = line,
+            Reason = "User clicked on Open in IDE button"
         };
 
-        string json = JsonConvert.SerializeObject(message);
-        await wsManager.SendAsync(json);
-        Debug.Log("[UIManager] Requesting project structure");
+        var json = JsonConvert.SerializeObject(message);
+        var jObject = JObject.Parse(json);
+
+        await wsManager.SendMessage(
+            type: MessageType.COMMAND,
+            data: jObject
+        );
+    }
+
+    public static void RegisterContextMenu(GameObject menu)
+    {
+        foreach (var existing in activeContextMenus)
+        {
+            if (existing != null) Destroy(existing);
+        }
+
+        activeContextMenus.Clear();
+        activeContextMenus.Add(menu);
+    }
+
+    public static void UnregisterContextMenu(GameObject menu)
+    {
+        if (activeContextMenus.Contains(menu))
+            activeContextMenus.Remove(menu);
+    }
+
+    public static void RegisterTooltip(GameObject tooltip)
+    {
+        foreach (var existing in activeTooltips)
+        {
+            if (existing != null) Destroy(existing);
+        }
+
+        activeTooltips.Clear();
+        activeTooltips.Add(tooltip);
+    }
+
+    public static void UnregisterTooltip(GameObject tooltip)
+    {
+        if (activeTooltips.Contains(tooltip))
+            activeTooltips.Remove(tooltip);
     }
 }

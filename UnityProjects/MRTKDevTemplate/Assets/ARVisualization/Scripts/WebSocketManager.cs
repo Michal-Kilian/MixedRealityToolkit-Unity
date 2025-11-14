@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 public class WebSocketManager : MonoBehaviour
 {
@@ -101,13 +102,11 @@ public class WebSocketManager : MonoBehaviour
                     {
                         case CommandType.PAUSE:
                             Debug.Log("Pause command received");
-                            Time.timeScale = 0f;
                             ProjectCity.Instance.Paused = true;
                             break;
 
                         case CommandType.RESUME:
                             Debug.Log("Resume command received");
-                            Time.timeScale = 1f;
                             ProjectCity.Instance.Paused = false;
                             break;
                     }
@@ -180,7 +179,21 @@ public class WebSocketManager : MonoBehaviour
         cts?.Cancel();
     }
 
-    public async Task SendAsync(string json)
+    public async Task SendMessage(MessageType type, JObject data)
+    {
+        WebSocketMessage message = new()
+        {
+            Type = type,
+            Source = "Unity",
+            TimeStamp = DateTimeOffset.Now.ToUnixTimeMilliseconds(),
+            Data = data
+        };
+
+        string json = JsonConvert.SerializeObject(message);
+        await SendAsync(json);
+    }
+
+    private async Task SendAsync(string json)
     {
         if (!IsConnected) return;
         byte[] data = Encoding.UTF8.GetBytes(json);

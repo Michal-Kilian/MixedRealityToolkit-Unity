@@ -11,6 +11,9 @@ public enum CommandType
 
     [EnumMember(Value = "resume")]
     RESUME,
+
+    [EnumMember(Value = "openInIDE")]
+    OPEN_IN_IDE,
 }
 
 [Serializable]
@@ -21,4 +24,10 @@ public class CommandMessage
 
     [JsonProperty("reason")]
     public string Reason { get; set; }
+
+    [JsonProperty("path")]
+    public string Path { get; set; }
+
+    [JsonProperty("line")]
+    public int Line { get; set; }
 }

@@ -61,12 +61,14 @@ public class CityHelpers
         return false;
     }
 
-    /*public static Color BaseClassColor(ClassNode c)
+    public Color GetColorForPackage(string packageName)
     {
-        if (c.IsInterface)
-            return new Color(0.25f, 0.65f, 1.0f);
-        if (c.IsAbstract)
-            return new Color(0.65f, 0.4f, 1.0f);
-
-    }*/
+        int hash = packageName.GetHashCode();
+        Random.InitState(hash);
+        return new Color(
+            0.3f + Random.value * 0.5f,
+            0.3f + Random.value * 0.5f,
+            0.3f + Random.value * 0.5f
+        );
+    }
 }
