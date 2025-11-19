@@ -1,19 +1,22 @@
 using TMPro;
 using UnityEngine;
 
-public class FloorTooltip : MonoBehaviour
+public class MethodTileTooltip : MonoBehaviour
 {
     [SerializeField] private TMP_Text methodLabel;
+
     private Camera mainCamera;
-    
+    private MethodActivityTile associatedMethodTile;
+
     private void Awake()
     {
         mainCamera = Camera.main;
     }
 
-    public void Initialize(Floor floor)
+    public void Initialize(MethodActivityTile methodTile)
     {
-        methodLabel.text = floor.methodName;
+        associatedMethodTile = methodTile;
+        methodLabel.text = methodTile.MethodName;
 
         gameObject.transform.localScale = new(
             gameObject.transform.localScale.x / 150f,
@@ -28,10 +31,5 @@ public class FloorTooltip : MonoBehaviour
 
         Vector3 lookDirection = transform.position - mainCamera.transform.position;
         transform.rotation = Quaternion.LookRotation(lookDirection);
-    }
-
-    private void OnDestroy()
-    {
-        UIManager.UnregisterFloorTooltip(gameObject);
     }
 }

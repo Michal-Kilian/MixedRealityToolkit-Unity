@@ -5,12 +5,14 @@ using UnityEngine.XR.Interaction.Toolkit;
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 public class Floor : MonoBehaviour
 {
-    [SerializeField] private float clickThreshold = 0.001f;
+    [SerializeField] private float clickThreshold = 0.3f;
     [SerializeField] private GameObject contextMenuPrefab;
     [SerializeField] private GameObject tooltipPrefab;
 
     private GameObject currentContextMenu;
     private GameObject currentTooltip;
+
+    private Vector3 tooltipPosition;
 
     public string path;
     public int line;
@@ -33,7 +35,8 @@ public class Floor : MonoBehaviour
         float footprint,
         float scaledHeight,
         float currentHeight,
-        float floorGap
+        float floorGap,
+        Vector3 tooltipPosition
     )
     {
         this.path = path;
@@ -42,6 +45,7 @@ public class Floor : MonoBehaviour
         this.className = className;
         this.methodName = methodName;
         this.lineCount = lineCount;
+        this.tooltipPosition = tooltipPosition;
 
         name = $"{className}.{methodName}";
         ResizeToMethod(footprint, scaledHeight, currentHeight, floorGap);
@@ -85,16 +89,22 @@ public class Floor : MonoBehaviour
 
     private void ToggleTooltip(bool show)
     {
+        if (!show)
+        {
+            Destroy(currentTooltip);
+            UIManager.UnregisterFloorTooltip(currentTooltip);
+            return;
+        }
+
         if (currentTooltip != null) Destroy(currentTooltip);
 
-        Vector3 position = transform.position;
-        position += Vector3.right * (transform.localScale.x + 0.1f);
-        position += Vector3.back * (transform.localScale.z + 0.1f);
-        currentTooltip = Instantiate(tooltipPrefab, position, Quaternion.identity);
+        Transform classTransform = transform.parent;
+        currentTooltip = Instantiate(tooltipPrefab, classTransform);
+        currentTooltip.transform.SetLocalPositionAndRotation(tooltipPosition, Quaternion.identity);
         var tooltip = currentTooltip.GetComponent<FloorTooltip>();
         tooltip.Initialize(this);
 
-        UIManager.RegisterTooltip(currentTooltip);
+        UIManager.RegisterFloorTooltip(currentTooltip);
     }
 
     private void ShowContextMenu()

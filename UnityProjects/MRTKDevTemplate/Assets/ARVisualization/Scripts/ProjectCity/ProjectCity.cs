@@ -26,6 +26,8 @@ public class ProjectCity : MonoBehaviour
     private readonly Dictionary<GameObject, Color> _baseColors = new();
     private bool _builtOnce = false;
 
+    private HashSet<string> userMethods;
+
     private FlashMode _flashMode;
     private HeatmapMode _heatmapMode;
     private IVisualizationMode _activeMode;
@@ -71,12 +73,18 @@ public class ProjectCity : MonoBehaviour
 
         BuildCity(structure);
 
-        Debug.Log($"[City] City built for {_project.ProjectName} with {structure.Packages} packages");
+        Debug.Log($"[City] City built for {_project.ProjectName} with {_classBuildings.Values.Count} buildings");
     }
 
     private void BuildCity(ProjectStructure project)
     {
+        Debug.Log("BuildCity start");
+
+        userMethods = new();
+
         float maxRawHeight = CityHelpers.Instance.FindMaxRawBuildingHeight(project);
+
+        Debug.Log("Max raw height found, going");
 
         var packages = project.Packages
             .Where(p => CityHelpers.Instance.HasAnyClassesRecursive(p))
@@ -116,10 +124,14 @@ public class ProjectCity : MonoBehaviour
 
         _flashMode.Initialize(_methodFloors, _baseColors);
         _heatmapMode.Initialize(_methodFloors, _baseColors);
+
+        ActivityMap.Instance.SetValidMethods(userMethods);
     }
 
     private void BuildPackageRecursive(PackageNode pkg, Transform parent, Vector3 localPos, float width, float depth, float maxRawHeight)
     {
+        Debug.Log($"Building package: {pkg.Name}");
+
         if (pkg == null) return;
 
         GameObject districtGO = new($"District_{pkg.Name}");
@@ -187,6 +199,8 @@ public class ProjectCity : MonoBehaviour
                 float rawFloorHeight = Mathf.Max(0.01f, method.LineCount * 0.001f);
                 float scaledFloorHeight = rawFloorHeight * perUnitScale;
 
+                Vector3 tooltipPosition = new(x, baseY + totalScaledHeight + 0.05f, z);
+
                 GameObject floorGO = Instantiate(floorPrefab, classGO.transform);
                 Floor floor = floorGO.GetComponent<Floor>();
                 floor.Initialize(
@@ -199,7 +213,8 @@ public class ProjectCity : MonoBehaviour
                     footprint: footprint,
                     scaledHeight: scaledFloorHeight,
                     currentHeight: currentHeight,
-                    floorGap: FloorGap
+                    floorGap: FloorGap,
+                    tooltipPosition: tooltipPosition
                 );
 
                 Color baseColor = GetColorForPackage(pkg.Name);
@@ -209,9 +224,11 @@ public class ProjectCity : MonoBehaviour
                 var floorRenderer = floor.GetComponent<Renderer>();
                 floorRenderer.material.color = floorColor;
                 _baseColors[floorGO] = floorColor;
-                
-                _methodFloors[$"{pkg.Name}.{cls.Name}.{method.Name}"] = floorGO;
-                
+
+                string key = $"{pkg.Name}.{cls.Name}.{method.Name}";
+                _methodFloors[key] = floorGO;
+                userMethods.Add(key);
+
                 currentHeight += scaledFloorHeight + FloorGap;
             }
 
@@ -275,5 +292,14 @@ public class ProjectCity : MonoBehaviour
         };
 
         VisualizationMode = mode;
+    }
+
+    public GameObject GetMethodFloor(string methodKey)
+    {
+        if (_methodFloors.TryGetValue(methodKey, out GameObject floor))
+        {
+            return floor;
+        }
+        return null;
     }
 }

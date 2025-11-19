@@ -12,9 +12,12 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TMP_Text textMessage;
 
     private WebSocketManager wsManager;
+    private static readonly int maxLines = 3;
 
     private static readonly List<GameObject> activeContextMenus = new();
-    private static readonly List<GameObject> activeTooltips = new();
+    private static readonly List<GameObject> activeFloorTooltips = new();
+    private static readonly List<GameObject> activeMethodTileTooltips = new();
+    private static readonly List<LineRenderer> activeLineConnections = new();
 
     private void Awake()
     {
@@ -86,20 +89,58 @@ public class UIManager : MonoBehaviour
             activeContextMenus.Remove(menu);
     }
 
-    public static void RegisterTooltip(GameObject tooltip)
+    public static void RegisterFloorTooltip(GameObject tooltip)
     {
-        foreach (var existing in activeTooltips)
+        foreach (var existing in activeFloorTooltips)
         {
             if (existing != null) Destroy(existing);
         }
 
-        activeTooltips.Clear();
-        activeTooltips.Add(tooltip);
+        activeFloorTooltips.Clear();
+        activeFloorTooltips.Add(tooltip);
     }
 
-    public static void UnregisterTooltip(GameObject tooltip)
+    public static void UnregisterFloorTooltip(GameObject tooltip)
     {
-        if (activeTooltips.Contains(tooltip))
-            activeTooltips.Remove(tooltip);
+        if (activeFloorTooltips.Contains(tooltip))
+            activeFloorTooltips.Remove(tooltip);
+    }
+
+    public static void RegisterMethodTileTooltip(GameObject tooltip)
+    {
+        foreach (var existing in activeMethodTileTooltips)
+        {
+            if (existing != null) Destroy(existing);
+        }
+
+        activeMethodTileTooltips.Clear();
+        activeMethodTileTooltips.Add(tooltip);
+    }
+
+    public static void UnregisterMethodTileTooltip(GameObject tooltip)
+    {
+        if (activeMethodTileTooltips.Contains(tooltip))
+            activeMethodTileTooltips.Remove(tooltip);
+    }
+
+    public static void RegisterLineConnection(LineRenderer line)
+    {
+        activeLineConnections.RemoveAll(l => l == null);
+        activeLineConnections.Add(line);
+
+        if (activeLineConnections.Count > maxLines)
+        {
+            LineRenderer oldest = activeLineConnections[0];
+            if (oldest != null)
+            {
+                oldest.enabled = false;
+            }
+            activeLineConnections.RemoveAt(0);
+        }
+    }
+
+    public static void UnregisterLineConnection(LineRenderer line)
+    {
+        activeLineConnections.Remove(line);
     }
 }

@@ -11,7 +11,6 @@ using Newtonsoft.Json.Linq;
 public class WebSocketManager : MonoBehaviour
 {
     [SerializeField] private bool shouldConnect = false;
-    [SerializeField] private FlameGraphManager flameGraphManager;
     [SerializeField] private UIManager uiManager;
 
     private ClientWebSocket ws;
@@ -71,15 +70,20 @@ public class WebSocketManager : MonoBehaviour
             switch(envelope.Type)
             {
                 case MessageType.PROJECT_STRUCTURE:
+                    Debug.Log($"envelope.Data: {envelope.Data}");
                     var structure = envelope.Data.ToObject<ProjectStructure>();
-                    Debug.Log($"Received project: {structure.ProjectName} with {structure.Packages.Count} packages");
-                    ProjectCity.Instance.RebuildCity(structure);
+                    Debug.Log($"structure: {structure}");
+                    Debug.Log($"Received project: {structure.ProjectName} with {structure.Packages.Count} root packages");
+                    if (ProjectCity.Instance != null)
+                        ProjectCity.Instance.RebuildCity(structure);
                     break;
 
                 case MessageType.EXECUTION_SAMPLE:
                     var sample = envelope.Data.ToObject<ExecutionSample>();
-                    ProjectCity.Instance.OnExecutionSample(sample);
-                    flameGraphManager.AddSample(sample);
+                    if (ProjectCity.Instance != null)
+                        ProjectCity.Instance.OnExecutionSample(sample);
+                    if (ActivityMap.Instance != null)
+                        ActivityMap.Instance.AddExecutionSample(sample);
                     break;
 
                 case MessageType.PROJECT_SNAPSHOT:
@@ -102,12 +106,14 @@ public class WebSocketManager : MonoBehaviour
                     {
                         case CommandType.PAUSE:
                             Debug.Log("Pause command received");
-                            ProjectCity.Instance.Paused = true;
+                            if (ProjectCity.Instance != null)
+                                ProjectCity.Instance.Paused = true;
                             break;
 
                         case CommandType.RESUME:
                             Debug.Log("Resume command received");
-                            ProjectCity.Instance.Paused = false;
+                            if (ProjectCity.Instance != null)
+                                ProjectCity.Instance.Paused = false;
                             break;
                     }
                     break;
@@ -117,7 +123,7 @@ public class WebSocketManager : MonoBehaviour
                     break;
             }
         }
-        catch (System.Exception e)
+        catch (Exception e)
         {
             Debug.LogError("JSON Parse Error: " + e.Message + " | Raw: " + raw);
         }
@@ -125,7 +131,7 @@ public class WebSocketManager : MonoBehaviour
 
     private async Task ReceiveLoop()
     {
-        byte[] buffer = new byte[8192];
+        byte[] buffer = new byte[65536];
 
         try
         {
@@ -149,6 +155,7 @@ public class WebSocketManager : MonoBehaviour
                 while (!result.EndOfMessage);
 
                 string completeMessage = builder.ToString();
+                Debug.Log($"Raw length: {completeMessage.Length} chars, bytes: {Encoding.UTF8.GetByteCount(completeMessage)}");
 
                 lock (messageQueue)
                 {
