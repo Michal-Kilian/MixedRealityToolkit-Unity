@@ -17,7 +17,9 @@ public class UIManager : MonoBehaviour
     private static readonly List<GameObject> activeContextMenus = new();
     private static readonly List<GameObject> activeFloorTooltips = new();
     private static readonly List<GameObject> activeMethodTileTooltips = new();
+    private static readonly List<GameObject> activeFlameBarTooltips = new();
     private static readonly List<LineRenderer> activeLineConnections = new();
+    private static readonly List<LineRenderer> activeFlameLineConnections = new();
 
     private void Awake()
     {
@@ -123,6 +125,23 @@ public class UIManager : MonoBehaviour
             activeMethodTileTooltips.Remove(tooltip);
     }
 
+    public static void RegisterFlameBarTooltip(GameObject tooltip)
+    {
+        foreach (var existing in activeFlameBarTooltips)
+        {
+            if (existing != null) Destroy(existing);
+        }
+
+        activeFlameBarTooltips.Clear();
+        activeFlameBarTooltips.Add(tooltip);
+    }
+
+    public static void UnregisterFlameBarTooltip(GameObject tooltip)
+    {
+        if (activeFlameBarTooltips.Contains(tooltip))
+            activeFlameBarTooltips.Remove(tooltip);
+    }
+
     public static void RegisterLineConnection(LineRenderer line)
     {
         activeLineConnections.RemoveAll(l => l == null);
@@ -141,6 +160,29 @@ public class UIManager : MonoBehaviour
 
     public static void UnregisterLineConnection(LineRenderer line)
     {
-        activeLineConnections.Remove(line);
+        if (activeLineConnections.Contains(line))
+            activeLineConnections.Remove(line);
+    }
+
+    public static void RegisterFlameLineConnection(LineRenderer line)
+    {
+        activeFlameLineConnections.RemoveAll(l => l == null);
+        activeFlameLineConnections.Add(line);
+
+        if (activeFlameLineConnections.Count > maxLines)
+        {
+            LineRenderer oldest = activeFlameLineConnections[0];
+            if (oldest != null)
+            {
+                oldest.enabled = false;
+            }
+            activeFlameLineConnections.RemoveAt(0);
+        }
+    }
+
+    public static void UnregisterFlameLineConnection(LineRenderer line)
+    {
+        if (activeFlameLineConnections.Contains(line))
+            activeFlameLineConnections.Remove(line);
     }
 }

@@ -2,31 +2,31 @@ using MixedReality.Toolkit;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
-[RequireComponent(typeof(LineRenderer))]
-public class MethodActivityTile : MonoBehaviour
+[RequireComponent(typeof(Renderer), typeof(LineRenderer))]
+public class FlameBar : MonoBehaviour
 {
     [SerializeField] private float clickThreshold = 0.3f;
     [SerializeField] private GameObject tooltipPrefab;
-    [SerializeField] private string tooltipOriginTag = "ActivityMapTooltipOrigin";
+    [SerializeField] private string tooltipOriginTag = "FlameGraphTooltipOrigin";
     [SerializeField] private LineRenderer lineRenderer;
     [SerializeField] private Material lineMaterial;
     [SerializeField] private float lineWidth = 0.01f;
 
     private GameObject currentTooltip;
     private GameObject tooltipOrigin;
-    private Transform targetFloorTransform;
+    private Transform targetMethodCallTransform;
     private bool isLineActive;
 
     private string methodKey;
-    private string methodName;
-    private MeshRenderer meshRenderer;
-    private Color minColor = Color.gray;
-    private Color maxColor = Color.red;
-    private float lerpSpeed;
-    private float tileGap = 0.002f;
+    private Renderer meshRenderer;
+    private Vector3 targetScale;
+    private Vector3 targetPosition;
+    private Color targetColor;
 
     public string MethodKey => methodKey;
-    public string MethodName => methodName;
+
+    private float lerpSpeed;
+    private Color minColor, maxColor;
 
     private MRTKBaseInteractable interactable;
 
@@ -34,7 +34,7 @@ public class MethodActivityTile : MonoBehaviour
 
     private void Awake()
     {
-        meshRenderer = GetComponent<MeshRenderer>();
+        meshRenderer = GetComponent<Renderer>();
         tooltipOrigin = GameObject.FindGameObjectWithTag(tooltipOriginTag);
     }
 
@@ -42,20 +42,15 @@ public class MethodActivityTile : MonoBehaviour
         string key,
         Color min,
         Color max,
-        float lerpS,
-        float tileG
+        float speed
     )
     {
         methodKey = key;
-        methodName = key.Contains('.')
-            ? key[(key.LastIndexOf('.') + 1)..]
-            : key;
         minColor = min;
         maxColor = max;
-        lerpSpeed = lerpS;
-        tileGap = tileG;
+        lerpSpeed = speed;
 
-        name = $"Method:{methodName}";
+        name = $"Call:{methodKey}";
 
         interactable = gameObject.AddComponent<MRTKBaseInteractable>();
         interactable.hoverEntered.AddListener(OnHoverEntered);
@@ -70,40 +65,24 @@ public class MethodActivityTile : MonoBehaviour
         lineRenderer.enabled = false;
     }
 
-    public void SetVisual(
-        Rect rect,
-        float flash
-    )
+    public void SetTarget(Vector3 position, Vector3 scale, float intensity)
     {
-        float gapWidth = Mathf.Max(rect.width - tileGap, 0f);
-        float gapHeight = Mathf.Max(rect.height - tileGap, 0f);
+        targetPosition = position;
+        targetScale = scale;
 
-        Vector3 targetPosition = new(
-            rect.x + rect.width / 2f - 0.5f,
-            0f,
-            rect.y + rect.height / 2f - 0.5f
-        );
+        /*int hash = name.GetHashCode();
+        float hue = (hash & 0xFFFFFF) / (float)0xFFFFFF;
+        Color baseColor = Color.HSVToRGB(hue, 0.7f, 1f);
+        targetColor = Color.Lerp(baseColor * 0.5f, baseColor, Mathf.Clamp01(intensity));
+        */
+        targetColor = Color.Lerp(minColor, maxColor, intensity);
+    }
 
-        Vector3 targetScale = new(gapWidth, 0.01f, gapHeight);
-
-        gameObject.transform.localPosition = Vector3.Lerp(
-            transform.localPosition,
-            targetPosition,
-            Time.deltaTime * lerpSpeed
-        );
-        gameObject.transform.localScale = Vector3.Lerp(
-            transform.localScale,
-            targetScale,
-            Time.deltaTime * lerpSpeed
-        );
-
-        Color current = meshRenderer.material.color;
-        Color targetColor = Color.Lerp(minColor, maxColor, flash);
-        meshRenderer.material.color = Color.Lerp(
-            current,
-            targetColor,
-            Time.deltaTime * lerpSpeed
-        );
+    private void Update()
+    {
+        transform.localPosition = Vector3.Lerp(transform.localPosition, targetPosition, Time.deltaTime * lerpSpeed);
+        transform.localScale = Vector3.Lerp(transform.localScale, targetScale, Time.deltaTime * lerpSpeed);
+        meshRenderer.material.color = Color.Lerp(meshRenderer.material.color, targetColor, Time.deltaTime * lerpSpeed);
     }
 
     private void OnHoverEntered(HoverEnterEventArgs arg0)
@@ -121,17 +100,17 @@ public class MethodActivityTile : MonoBehaviour
         if (!show)
         {
             Destroy(currentTooltip);
-            UIManager.UnregisterMethodTileTooltip(currentTooltip);
+            UIManager.UnregisterFlameBarTooltip(currentTooltip);
             return;
         }
 
         if (currentTooltip != null) Destroy(currentTooltip);
 
         currentTooltip = Instantiate(tooltipPrefab, tooltipOrigin.transform.position, Quaternion.identity);
-        var tooltip = currentTooltip.GetComponent<MethodTileTooltip>();
+        var tooltip = currentTooltip.GetComponent<FlameBarTooltip>();
         tooltip.Initialize(this);
 
-        UIManager.RegisterMethodTileTooltip(currentTooltip);
+        UIManager.RegisterFlameBarTooltip(currentTooltip);
     }
 
     private void OnSelectEntered(SelectEnterEventArgs arg0)
@@ -157,14 +136,14 @@ public class MethodActivityTile : MonoBehaviour
             lineRenderer.enabled = false;
             isLineActive = false;
 
-            UIManager.UnregisterLineConnection(lineRenderer);
+            UIManager.UnregisterFlameLineConnection(lineRenderer);
             return;
         }
 
-        GameObject floor = ProjectCity.Instance.GetMethodFloor(MethodKey);
+        GameObject floor = ProjectCity.Instance.GetMethodFloor(methodKey);
         if (floor == null) return;
 
-        targetFloorTransform = floor.transform;
+        targetMethodCallTransform = floor.transform;
         isLineActive = true;
 
         lineRenderer.enabled = true;
@@ -175,12 +154,12 @@ public class MethodActivityTile : MonoBehaviour
 
         UpdateLineConnection();
 
-        UIManager.RegisterLineConnection(lineRenderer);
+        UIManager.RegisterFlameLineConnection(lineRenderer);
     }
 
     private void LateUpdate()
     {
-        if (isLineActive && targetFloorTransform != null)
+        if (isLineActive && targetMethodCallTransform != null)
         {
             UpdateLineConnection();
         }
@@ -191,7 +170,7 @@ public class MethodActivityTile : MonoBehaviour
         if (!lineRenderer.enabled) return;
 
         Vector3 start = transform.position;
-        Vector3 end = targetFloorTransform.position;
+        Vector3 end = targetMethodCallTransform.position;
 
         lineRenderer.SetPosition(0, start);
         lineRenderer.SetPosition(1, end);
@@ -201,14 +180,14 @@ public class MethodActivityTile : MonoBehaviour
     {
         if (currentTooltip != null)
         {
-            UIManager.UnregisterMethodTileTooltip(currentTooltip);
+            UIManager.UnregisterFlameBarTooltip(currentTooltip);
             Destroy(currentTooltip);
         }
 
         if (lineRenderer != null)
-            UIManager.UnregisterLineConnection(lineRenderer);
+            UIManager.UnregisterFlameLineConnection(lineRenderer);
 
         isLineActive = false;
-        targetFloorTransform = null;
+        targetMethodCallTransform = null;
     }
 }

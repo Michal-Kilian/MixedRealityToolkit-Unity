@@ -7,8 +7,6 @@ public class CityHelpers
 
     public float FindMaxRawBuildingHeight(ProjectStructure project)
     {
-        Debug.Log("FindMaxRawBuildingHeight running");
-
         float maxRawHeight = 0f;
 
         if (project?.Packages == null) return 0f;
@@ -23,8 +21,6 @@ public class CityHelpers
 
     public float FindMaxHeightInPackageRecursive(PackageNode pkg)
     {
-        Debug.Log("FindMaxHeightInPackageRecursive running");
-
         float maxRawHeight = 0f;
 
         if (pkg?.Files != null)
@@ -46,8 +42,6 @@ public class CityHelpers
                 maxRawHeight = Mathf.Max(maxRawHeight, FindMaxHeightInPackageRecursive(subPackage));
             }
         }
-
-        Debug.Log("FindMaxHeightInPackageRecursive finished");
 
         return maxRawHeight;
     }

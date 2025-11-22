@@ -92,7 +92,6 @@ public class FloorContextMenu : MonoBehaviour
 
     public void Close()
     {
-        Debug.Log($"Closing menu");
         Destroy(gameObject);
     }
 

@@ -41,7 +41,7 @@ public class ActivityMap : MonoBehaviour
         validMethods = new(methods);
     }
 
-    public void AddExecutionSample(ExecutionSample sample)
+    public void OnExecutionSample(ExecutionSample sample)
     {
         if (paused) return;
 
@@ -92,12 +92,7 @@ public class ActivityMap : MonoBehaviour
             float flash = liveHeat.GetValueOrDefault(key, 0f);
             double total = totalCalls[key];
 
-            tileGO.GetComponent<MethodActivityTile>().SetVisual(
-                rect,
-                flash,
-                (float) globalMax,
-                total
-            );
+            tileGO.GetComponent<MethodActivityTile>().SetVisual(rect, flash);
         }
     }
 

@@ -8,6 +8,8 @@ public class ProjectCity : MonoBehaviour
     public static ProjectCity Instance { get; private set; }
 
     [SerializeField] private bool UseDummyProjectStructure = false;
+
+    [Header("City Settings")]
     [SerializeField] private float MaxSize = 1.0f;
     [SerializeField] private float MaxBuildingHeight = 0.5f;
     [SerializeField] private float BaseBuildingHeight = 0.01f;
@@ -19,6 +21,8 @@ public class ProjectCity : MonoBehaviour
     [SerializeField] private GameObject floorPrefab;
 
     [SerializeField] private UIManager UIManager;
+
+    public float CityTopHeight => MaxBuildingHeight + 1f;
 
     private ProjectStructure _project;
     private readonly Dictionary<string, GameObject> _classBuildings = new();
@@ -78,13 +82,9 @@ public class ProjectCity : MonoBehaviour
 
     private void BuildCity(ProjectStructure project)
     {
-        Debug.Log("BuildCity start");
-
         userMethods = new();
 
         float maxRawHeight = CityHelpers.Instance.FindMaxRawBuildingHeight(project);
-
-        Debug.Log("Max raw height found, going");
 
         var packages = project.Packages
             .Where(p => CityHelpers.Instance.HasAnyClassesRecursive(p))
@@ -126,12 +126,11 @@ public class ProjectCity : MonoBehaviour
         _heatmapMode.Initialize(_methodFloors, _baseColors);
 
         ActivityMap.Instance.SetValidMethods(userMethods);
+        FlameGraph.Instance.SetValidMethods(userMethods);
     }
 
     private void BuildPackageRecursive(PackageNode pkg, Transform parent, Vector3 localPos, float width, float depth, float maxRawHeight)
     {
-        Debug.Log($"Building package: {pkg.Name}");
-
         if (pkg == null) return;
 
         GameObject districtGO = new($"District_{pkg.Name}");

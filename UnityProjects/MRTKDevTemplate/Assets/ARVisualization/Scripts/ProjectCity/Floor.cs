@@ -98,8 +98,12 @@ public class Floor : MonoBehaviour
 
         if (currentTooltip != null) Destroy(currentTooltip);
 
-        Transform classTransform = transform.parent;
-        currentTooltip = Instantiate(tooltipPrefab, classTransform);
+        Vector3 position = new(
+            transform.position.x,
+            ProjectCity.Instance.CityTopHeight,
+            transform.position.z
+        );
+        currentTooltip = Instantiate(tooltipPrefab, position, Quaternion.identity, transform.parent);
         currentTooltip.transform.SetLocalPositionAndRotation(tooltipPosition, Quaternion.identity);
         var tooltip = currentTooltip.GetComponent<FloorTooltip>();
         tooltip.Initialize(this);
@@ -111,9 +115,11 @@ public class Floor : MonoBehaviour
     {
         if (currentContextMenu != null) Destroy(currentContextMenu);
 
-        Vector3 position = transform.position;
-        position += Vector3.up * (transform.localScale.y + 0.1f);
-        position += Vector3.back * (transform.localScale.z + 0.1f);
+        Vector3 position = new(
+            transform.position.x,
+            ProjectCity.Instance.CityTopHeight + 0.2f,
+            transform.position.z
+        );
         currentContextMenu = Instantiate(contextMenuPrefab, position, Quaternion.identity);
         var ctx = currentContextMenu.GetComponent<FloorContextMenu>();
         ctx.Initialize(this);

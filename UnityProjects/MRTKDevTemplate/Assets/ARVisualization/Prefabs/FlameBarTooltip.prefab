@@ -9,11 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7193323284201261086}
-  - component: {fileID: 134621356735748145}
+  - component: {fileID: -6219183514087575147}
   - component: {fileID: 3296965529722498439}
   - component: {fileID: 2230680492004073454}
   m_Layer: 0
-  m_Name: MethodTileTooltip
+  m_Name: FlameBarTooltip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -39,7 +39,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 80, y: 10}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &134621356735748145
+--- !u!114 &-6219183514087575147
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -48,7 +48,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 53208675032498891}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 721d645ee26e59243bd656214176dcbf, type: 3}
+  m_Script: {fileID: 11500000, guid: 5e30018406eba8e478a10fe92b0ea5e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   methodLabel: {fileID: 950283579380230987}

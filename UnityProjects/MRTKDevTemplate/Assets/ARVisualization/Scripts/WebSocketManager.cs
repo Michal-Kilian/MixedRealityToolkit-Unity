@@ -70,9 +70,7 @@ public class WebSocketManager : MonoBehaviour
             switch(envelope.Type)
             {
                 case MessageType.PROJECT_STRUCTURE:
-                    Debug.Log($"envelope.Data: {envelope.Data}");
                     var structure = envelope.Data.ToObject<ProjectStructure>();
-                    Debug.Log($"structure: {structure}");
                     Debug.Log($"Received project: {structure.ProjectName} with {structure.Packages.Count} root packages");
                     if (ProjectCity.Instance != null)
                         ProjectCity.Instance.RebuildCity(structure);
@@ -83,7 +81,9 @@ public class WebSocketManager : MonoBehaviour
                     if (ProjectCity.Instance != null)
                         ProjectCity.Instance.OnExecutionSample(sample);
                     if (ActivityMap.Instance != null)
-                        ActivityMap.Instance.AddExecutionSample(sample);
+                        ActivityMap.Instance.OnExecutionSample(sample);
+                    if (FlameGraph.Instance != null)
+                        FlameGraph.Instance.OnExecutionSample(sample);
                     break;
 
                 case MessageType.PROJECT_SNAPSHOT:
@@ -108,12 +108,16 @@ public class WebSocketManager : MonoBehaviour
                             Debug.Log("Pause command received");
                             if (ProjectCity.Instance != null)
                                 ProjectCity.Instance.Paused = true;
+                            if (ActivityMap.Instance != null)
+                                ActivityMap.Instance.Paused = true;
                             break;
 
                         case CommandType.RESUME:
                             Debug.Log("Resume command received");
                             if (ProjectCity.Instance != null)
                                 ProjectCity.Instance.Paused = false;
+                            if (ActivityMap.Instance != null)
+                                ActivityMap.Instance.Paused = false;
                             break;
                     }
                     break;
@@ -155,7 +159,6 @@ public class WebSocketManager : MonoBehaviour
                 while (!result.EndOfMessage);
 
                 string completeMessage = builder.ToString();
-                Debug.Log($"Raw length: {completeMessage.Length} chars, bytes: {Encoding.UTF8.GetByteCount(completeMessage)}");
 
                 lock (messageQueue)
                 {
