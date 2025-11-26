@@ -1,0 +1,1 @@
+{"timestamp":1763812342492,"threadName":"\u003cunknown\u003e","frames":[{"className":"sun.java2d.d3d.D3DScreenUpdateManager","method":"run","line":453},{"className":"java.lang.Thread","method":"run","line":840}]}

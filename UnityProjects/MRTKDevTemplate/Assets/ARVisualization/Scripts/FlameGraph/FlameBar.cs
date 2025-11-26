@@ -1,17 +1,35 @@
 using MixedReality.Toolkit;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
+//using TMPro;
 
 [RequireComponent(typeof(Renderer), typeof(LineRenderer))]
 public class FlameBar : MonoBehaviour
 {
+    [Header("Interaction")]
     [SerializeField] private float clickThreshold = 0.3f;
+
+    [Header("Tooltip")]
     [SerializeField] private GameObject tooltipPrefab;
     [SerializeField] private string tooltipOriginTag = "FlameGraphTooltipOrigin";
+
+    [Header("Connection")]
     [SerializeField] private LineRenderer lineRenderer;
     [SerializeField] private Material lineMaterial;
     [SerializeField] private float lineWidth = 0.01f;
 
+    [Header("Heat Decay")]
+    [SerializeField] private float heatDecayPerSecond = 0.1f;
+    [SerializeField] private float heatBoost = 0.5f;
+    [SerializeField] private float minHeat = 0.1f;
+
+    private float currentHeat = 0f;
+
+    /*[Header("Label")]
+    [SerializeField] private TMP_Text label;
+    [SerializeField] private float textPadding = 0.005f;
+    [SerializeField] private float minTextWidthToShow = 0.02f;
+    */
     private GameObject currentTooltip;
     private GameObject tooltipOrigin;
     private Transform targetMethodCallTransform;
@@ -32,10 +50,15 @@ public class FlameBar : MonoBehaviour
 
     private float selectStartTime;
 
+    private Vector3 lastScale;
+    private Vector3 baseLabelScale;
+
     private void Awake()
     {
         meshRenderer = GetComponent<Renderer>();
         tooltipOrigin = GameObject.FindGameObjectWithTag(tooltipOriginTag);
+        //baseLabelScale = label.transform.localScale;
+        //label.text = "";
     }
 
     public void Initialize(
@@ -70,19 +93,75 @@ public class FlameBar : MonoBehaviour
         targetPosition = position;
         targetScale = scale;
 
-        /*int hash = name.GetHashCode();
-        float hue = (hash & 0xFFFFFF) / (float)0xFFFFFF;
-        Color baseColor = Color.HSVToRGB(hue, 0.7f, 1f);
-        targetColor = Color.Lerp(baseColor * 0.5f, baseColor, Mathf.Clamp01(intensity));
-        */
-        targetColor = Color.Lerp(minColor, maxColor, intensity);
+        currentHeat = Mathf.Clamp01(currentHeat + heatBoost * intensity);
     }
 
     private void Update()
     {
+        if (FlameGraph.Instance.Paused) return;
+
         transform.localPosition = Vector3.Lerp(transform.localPosition, targetPosition, Time.deltaTime * lerpSpeed);
         transform.localScale = Vector3.Lerp(transform.localScale, targetScale, Time.deltaTime * lerpSpeed);
-        meshRenderer.material.color = Color.Lerp(meshRenderer.material.color, targetColor, Time.deltaTime * lerpSpeed);
+
+        currentHeat = Mathf.Clamp01(currentHeat - heatDecayPerSecond * Time.deltaTime);
+
+        float brightness = Mathf.Max(minHeat, currentHeat);
+
+        Color baseColor = Color.Lerp(minColor, maxColor, brightness);
+
+        meshRenderer.material.color = Color.Lerp(meshRenderer.material.color, baseColor, Time.deltaTime * lerpSpeed);
+
+        /*if ((transform.localScale - lastScale).sqrMagnitude > 0.0001f)
+        {
+            UpdateLabel();
+            lastScale = transform.localScale;
+        }
+
+        var s = transform.localScale;
+        label.transform.localScale = new(
+            baseLabelScale.x / s.x,
+            baseLabelScale.y / s.y,
+            baseLabelScale.z / s.z
+        );
+
+        Vector3 lp = label.transform.localPosition;
+        lp.z = -(targetScale.z * 0.5f + 0.001f);
+        label.transform.localPosition = lp;*/
+    }
+
+    private void UpdateLabel()
+    {
+        /*float usableWidth = transform.localScale.x - textPadding * 2f;
+        if (usableWidth < minTextWidthToShow)
+        {
+            label.text = "";
+            return;
+        }
+
+        float charUnit = 0.02f;
+        int maxChars = Mathf.FloorToInt(usableWidth / charUnit);
+        if (maxChars <= 0)
+        {
+            label.text = "";
+            return;
+        }
+
+        string rawName = methodKey;
+        int dot = rawName.LastIndexOf('.');
+        string shortName = dot >= 0 ? rawName[(dot + 1)..] : rawName;
+
+        if (shortName.Length > maxChars)
+        {
+            if (maxChars <= 3) label.text = "";
+            else label.text = shortName[..(maxChars - 3)] + "...";
+        }
+        else
+        {
+            label.text = shortName;
+        }
+
+        float fontSize = transform.localScale.y * 10f;
+        label.fontSize = fontSize;*/
     }
 
     private void OnHoverEntered(HoverEnterEventArgs arg0)

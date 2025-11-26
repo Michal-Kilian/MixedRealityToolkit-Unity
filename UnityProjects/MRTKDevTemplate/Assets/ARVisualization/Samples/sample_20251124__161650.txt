@@ -1,0 +1,1 @@
+{"timestamp":1763997410707,"threadName":"\u003cunknown\u003e","frames":[{"className":"manager.GameEngine","method":"run","line":140},{"className":"java.lang.Thread","method":"run","line":840}]}

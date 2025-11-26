@@ -110,6 +110,8 @@ public class WebSocketManager : MonoBehaviour
                                 ProjectCity.Instance.Paused = true;
                             if (ActivityMap.Instance != null)
                                 ActivityMap.Instance.Paused = true;
+                            if (FlameGraph.Instance != null)
+                                FlameGraph.Instance.Paused = true;
                             break;
 
                         case CommandType.RESUME:
@@ -118,6 +120,8 @@ public class WebSocketManager : MonoBehaviour
                                 ProjectCity.Instance.Paused = false;
                             if (ActivityMap.Instance != null)
                                 ActivityMap.Instance.Paused = false;
+                            if (FlameGraph.Instance != null)
+                                FlameGraph.Instance.Paused = false;
                             break;
                     }
                     break;

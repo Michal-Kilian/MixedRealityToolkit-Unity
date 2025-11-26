@@ -1,4 +1,3 @@
-using System;
 using Newtonsoft.Json;
 using TMPro;
 using UnityEngine;
@@ -72,6 +71,15 @@ public class UIManager : MonoBehaviour
             type: MessageType.COMMAND,
             data: jObject
         );
+    }
+
+    public void OnToggleSystemCallsClicked()
+    {
+        if (FlameGraph.Instance != null)
+        {
+            //bool show = FlameGraph.Instance.ShowSystemMethods;
+            //FlameGraph.Instance.ShowSystemMethods = !show;
+        }
     }
 
     public static void RegisterContextMenu(GameObject menu)

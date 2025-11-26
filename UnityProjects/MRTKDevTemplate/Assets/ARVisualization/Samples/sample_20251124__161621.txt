@@ -1,0 +1,1 @@
+{"timestamp":1763997381690,"threadName":"\u003cunknown\u003e","frames":[{"className":"java.util.Arrays","method":"copyOf","line":3512},{"className":"java.util.ArrayList","method":"toArray","line":400},{"className":"sun.java2d.d3d.D3DScreenUpdateManager","method":"run","line":435},{"className":"java.lang.Thread","method":"run","line":840}]}
