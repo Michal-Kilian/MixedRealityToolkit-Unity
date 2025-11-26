@@ -1,5 +1,4 @@
 using Newtonsoft.Json;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -75,6 +74,8 @@ public class Sampler : MonoBehaviour
 
         if (FlameGraph.Instance != null)
             FlameGraph.Instance.OnExecutionSample(samples[currentIndex]);
+        if (ActivityMap.Instance != null)
+            ActivityMap.Instance.OnExecutionSample(samples[currentIndex]);
         currentIndex = (currentIndex + 1) % samples.Count;
     }
 }

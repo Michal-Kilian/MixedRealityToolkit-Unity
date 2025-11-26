@@ -43,12 +43,14 @@ public class ActivityMap : MonoBehaviour
 
     public void OnExecutionSample(ExecutionSample sample)
     {
+        Debug.Log("ExecutionSample runs");
+
         if (paused) return;
 
         foreach (var f in sample.Frames)
         {
             string key = $"{f.ClassName}.{f.Method}";
-            if (!validMethods.Contains(key)) continue;
+            //if (!validMethods.Contains(key)) continue;
 
             totalCalls[key] = totalCalls.GetValueOrDefault(key, 0) + 1;
             if (totalCalls[key] > globalMax) globalMax = totalCalls[key];
