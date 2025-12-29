@@ -255,6 +255,17 @@
       },
       "url": "https://packages.unity.com"
     },
+    "com.unity.xr.compositionlayers": {
+      "version": "2.3.0",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.inputsystem": "1.6.3",
+        "com.unity.xr.core-utils": "2.2.2",
+        "com.unity.xr.management": "4.0.1"
+      },
+      "url": "https://packages.unity.com"
+    },
     "com.unity.xr.core-utils": {
       "version": "2.5.2",
       "depth": 1,
@@ -315,6 +326,16 @@
       },
       "url": "https://packages.unity.com"
     },
+    "com.unity.xr.meta-openxr": {
+      "version": "1.0.4",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.xr.openxr": "1.7.0",
+        "com.unity.xr.arfoundation": "5.1.0"
+      },
+      "url": "https://packages.unity.com"
+    },
     "com.unity.xr.openxr": {
       "version": "1.14.3",
       "depth": 0,
@@ -326,6 +347,15 @@
         "com.unity.xr.legacyinputhelpers": "2.1.2"
       },
       "url": "https://packages.unity.com"
+    },
+    "jp.keijiro.klak.ndi": {
+      "version": "2.1.6",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.modules.screencapture": "1.0.0"
+      },
+      "url": "https://registry.npmjs.com"
     },
     "org.mixedrealitytoolkit.accessibility": {
       "version": "file:../../../org.mixedrealitytoolkit.accessibility",

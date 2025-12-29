@@ -33,7 +33,7 @@ public class Sampler : MonoBehaviour
     private void LoadSamples()
     {
         samples.Clear();
-        string absolutePath = Path.Combine(Application.dataPath, folderRelativePath);
+        string absolutePath = Path.Combine(Application.persistentDataPath, folderRelativePath);
         if (!Directory.Exists(absolutePath))
         {
             Debug.LogError($"Sampler: Folder not found: {absolutePath}");
