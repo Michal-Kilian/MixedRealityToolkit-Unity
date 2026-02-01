@@ -27,6 +27,12 @@ public enum MessageType
 
     [EnumMember(Value = "requestProjectStructure")]
     REQUEST_PROJECT_STRUCTURE,
+
+    [EnumMember(Value = "ping")]
+    PING,
+
+    [EnumMember(Value = "pong")]
+    PONG,
 }
 
 [Serializable]

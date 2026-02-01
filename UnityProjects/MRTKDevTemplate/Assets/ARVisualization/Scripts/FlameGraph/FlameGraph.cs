@@ -34,6 +34,8 @@ public class FlameGraph : MonoBehaviour
     }*/
 
     private readonly FlameNode root = new("ROOT");
+    public FlameNode GetRootNode() => root;
+
     private HashSet<string> validMethods;
 
     private int maxDepth = 1;
