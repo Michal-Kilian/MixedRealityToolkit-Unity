@@ -46,7 +46,7 @@ public class ConnectionStatus : MonoBehaviour
 
     private void OnDisable()
     {
-        webSocketManager.OnConnectionStateChanged -= UpdateUI;        webSocketManager.OnProjectSnapshotReceived += OnProjectSnapshot;
+        webSocketManager.OnConnectionStateChanged -= UpdateUI;
         webSocketManager.OnProjectSnapshotReceived -= OnProjectSnapshot;
     }
 
@@ -59,12 +59,14 @@ public class ConnectionStatus : MonoBehaviour
             case ConnectionState.Connected:
                 statusText.text = "Connected";
                 statusIcon.sprite = connectedIcon;
+                statusIcon.material.color = Color.green;
                 connectButton.gameObject.SetActive(false);
                 break;
 
             case ConnectionState.Connecting:
                 statusText.text = "Connecting...";
                 statusIcon.sprite = connectingIcon;
+                statusIcon.material.color = Color.blue;
                 connectButton.gameObject.SetActive(false);
                 HideProjectPanel();
                 StartSpinning();
@@ -73,6 +75,7 @@ public class ConnectionStatus : MonoBehaviour
             case ConnectionState.Disconnected:
                 statusText.text = "Disconnected";
                 statusIcon.sprite = disconnectedIcon;
+                statusIcon.material.color = Color.red;
                 connectButton.gameObject.SetActive(true);
                 HideProjectPanel();
                 break;
