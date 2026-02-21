@@ -1,4 +1,5 @@
 using MixedReality.Toolkit;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
@@ -25,6 +26,9 @@ public class Floor : MonoBehaviour
 
     private float selectStartTime;
 
+    [SerializeField] private float spawnAnimationDuration = 0.6f;
+    [SerializeField] private AnimationCurve spawnEase = AnimationCurve.EaseInOut(0, 0, 1, 1);
+
     public void Initialize(
         string path,
         int line,
@@ -32,11 +36,10 @@ public class Floor : MonoBehaviour
         string className,
         string methodName,
         int lineCount,
-        float footprint,
-        float scaledHeight,
-        float currentHeight,
-        float floorGap,
-        Vector3 tooltipPosition
+        Vector3 targetLocalPosition,
+        Vector3 targetLocalScale,
+        Vector3 tooltipPosition,
+        float spawnDelay = 0f
     )
     {
         this.path = path;
@@ -48,7 +51,8 @@ public class Floor : MonoBehaviour
         this.tooltipPosition = tooltipPosition;
 
         name = $"{className}.{methodName}";
-        ResizeToMethod(footprint, scaledHeight, currentHeight, floorGap);
+
+        PlaySpawnAnimation(targetLocalPosition, targetLocalScale, spawnDelay);
 
         interactable = gameObject.AddComponent<MRTKBaseInteractable>();
         interactable.selectEntered.AddListener(OnSelectEntered);
@@ -57,10 +61,44 @@ public class Floor : MonoBehaviour
         interactable.hoverExited.AddListener(OnHoverExited);
     }
 
-    private void ResizeToMethod(float footprint, float scaledHeight, float currentHeight, float floorGap)
+    private void PlaySpawnAnimation(
+        Vector3 targetLocalPosition,
+        Vector3 targetLocalScale,
+        float delay
+    )
     {
-        gameObject.transform.localScale = new(footprint, scaledHeight, footprint);
-        gameObject.transform.localPosition = new(0f, currentHeight + scaledHeight / 2f + floorGap, 0f);
+        transform.localPosition = targetLocalPosition;
+        transform.localScale = Vector3.zero;
+
+        StartCoroutine(SpawnRoutine(
+            targetLocalScale,
+            delay
+        ));
+    }
+
+    private IEnumerator SpawnRoutine(
+        Vector3 targetLocalScale,
+        float delay
+    )
+    {
+        if (delay > 0f)
+            yield return new WaitForSeconds(delay);
+
+        float time = 0f;
+
+        while (time < spawnAnimationDuration)
+        {
+            time += Time.deltaTime;
+            float t = time / spawnAnimationDuration;
+
+            float eased = spawnEase.Evaluate(t);
+
+            transform.localScale = Vector3.Lerp(Vector3.zero, targetLocalScale, eased);
+
+            yield return null;
+        }
+
+        transform.localScale = targetLocalScale;
     }
 
     private void OnSelectEntered(SelectEnterEventArgs arg0)

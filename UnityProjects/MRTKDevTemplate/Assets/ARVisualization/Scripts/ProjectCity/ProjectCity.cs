@@ -1,6 +1,16 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
+
+[System.Serializable]
+public enum MethodOrdering
+{
+    LOC,
+    ParameterCount,
+    AnnotationsCount,
+}
 
 public class ProjectCity : MonoBehaviour
 {
@@ -16,24 +26,29 @@ public class ProjectCity : MonoBehaviour
     [SerializeField] private float BaseDistrictHeight = 0.01f;
     [SerializeField] private float FloorGap = 0.002f;
     [SerializeField] private VisualizationModes VisualizationMode = VisualizationModes.Heatmap;
+    [SerializeField] private MethodOrdering MethodOrder = MethodOrdering.LOC;
 
     [SerializeField] private GameObject floorPrefab;
 
     [SerializeField] private UIManager UIManager;
+    //[SerializeField] private PackageFilterPanel filterPanel;
 
     public float CityTopHeight => MaxBuildingHeight + 1f;
+
+    public MethodOrdering SelectedMethodOrdering => MethodOrder;
 
     private ProjectStructure _project;
     private readonly Dictionary<string, GameObject> _classBuildings = new();
     private readonly Dictionary<string, GameObject> _methodFloors = new();
     private readonly Dictionary<GameObject, Color> _baseColors = new();
-    private bool _builtOnce = false;
 
     private HashSet<string> userMethods;
 
     private FlashMode _flashMode;
     private HeatmapMode _heatmapMode;
     private IVisualizationMode _activeMode;
+
+    //private HashSet<string> _hiddenPackages = null;
 
     private bool paused;
 
@@ -42,6 +57,8 @@ public class ProjectCity : MonoBehaviour
         get => paused;
         set => paused = value;
     }
+
+    public bool IsDisplayed() => transform.childCount > 0;
 
     private void Awake()
     {
@@ -63,16 +80,14 @@ public class ProjectCity : MonoBehaviour
 
     public void RebuildCity(ProjectStructure structure)
     {
-        if (_project == structure && _builtOnce) return;
-
         foreach (Transform child in transform)
         {
             Destroy(child.gameObject);
         }
 
         _classBuildings.Clear();
+
         _project = structure;
-        _builtOnce = true;
 
         BuildCity(structure);
 
@@ -83,10 +98,16 @@ public class ProjectCity : MonoBehaviour
     {
         userMethods = new();
 
+        //List<string> packageNames = _project.Packages.Select(p => p.Name).ToList();
+        //filterPanel.Initialize(packageNames);
+
         float maxRawHeight = CityHelpers.Instance.FindMaxRawBuildingHeight(project);
 
         var packages = project.Packages
-            .Where(p => CityHelpers.Instance.HasAnyClassesRecursive(p))
+            .Where(p =>
+                CityHelpers.Instance.HasAnyClassesRecursive(p) //&&
+                //!_hiddenPackages.Contains(p.Name)
+            )
             .ToList();
 
         if (packages == null || packages.Count == 0)
@@ -145,6 +166,8 @@ public class ProjectCity : MonoBehaviour
         block.transform.localPosition = new(0, BaseDistrictHeight / 2f, 0);
         block.GetComponent<Renderer>().material.color = GetColorForPackage(pkg.Name) * 0.8f;
 
+        CreatePackageLabel(pkg.Name, districtGO.transform, width, depth);
+
         int total = classes.Count + subs.Count;
         if (total == 0) return;
 
@@ -174,7 +197,10 @@ public class ProjectCity : MonoBehaviour
             classGO.transform.SetParent(districtGO.transform, false);
             classGO.transform.localPosition = new(x, 0, z);
 
-            var methods = cls.Methods?.OrderByDescending(m => m.LineCount).ToList() ?? new List<MethodNode>();
+            var methods = cls.Methods?
+                .OrderByDescending(m => GetDepthMetric(m))
+                .ThenByDescending(m => m.LineCount)
+                .ToList() ?? new();
             float currentHeight = baseY;
 
             float totalRawHeight = Mathf.Max(
@@ -189,7 +215,11 @@ public class ProjectCity : MonoBehaviour
             float totalScaledHeight = buildingScale * MaxBuildingHeight;
             
             float perUnitScale = totalScaledHeight / totalRawHeight;
-            
+
+            float maxDepthMetric = methods.Count > 0 ? methods.Max(m => GetDepthMetric(m)) : 1f;
+
+            float spawnDelayStep = 0.1f;
+
             for (int j = 0; j < methods.Count; j++)
             {
                 MethodNode method = methods[j];
@@ -197,7 +227,24 @@ public class ProjectCity : MonoBehaviour
                 float rawFloorHeight = Mathf.Max(0.01f, method.LineCount * 0.001f);
                 float scaledFloorHeight = rawFloorHeight * perUnitScale;
 
+                float depthMetric = GetDepthMetric(method);
+                float normalizedDepth = maxDepthMetric > 0 ? depthMetric / maxDepthMetric : 0f;
+                float curvedDepth = Mathf.Sqrt(normalizedDepth);
+                float minDepth = footprint * 0.3f;
+                float maxDepth = footprint;
+                float floorDepth = Mathf.Lerp(minDepth, maxDepth, curvedDepth);
+
                 Vector3 tooltipPosition = new(x, baseY + totalScaledHeight + 0.05f, z);
+
+                float backZ = footprint / 2f;
+                float localZ = backZ - (floorDepth / 2f);
+                float centerY = currentHeight + scaledFloorHeight / 2f;
+
+                Vector3 targetScale = new(footprint, scaledFloorHeight, floorDepth);
+
+                Vector3 targetPosition = new(0f, centerY, localZ);
+
+                float delay = j * spawnDelayStep;
 
                 GameObject floorGO = Instantiate(floorPrefab, classGO.transform);
                 Floor floor = floorGO.GetComponent<Floor>();
@@ -208,11 +255,10 @@ public class ProjectCity : MonoBehaviour
                     className: cls.Name,
                     methodName: method.Name,
                     lineCount: method.LineCount,
-                    footprint: footprint,
-                    scaledHeight: scaledFloorHeight,
-                    currentHeight: currentHeight,
-                    floorGap: FloorGap,
-                    tooltipPosition: tooltipPosition
+                    targetLocalPosition: targetPosition,
+                    targetLocalScale: targetScale,
+                    tooltipPosition: tooltipPosition,
+                    spawnDelay: delay
                 );
 
                 Color baseColor = GetColorForPackage(pkg.Name);
@@ -253,6 +299,34 @@ public class ProjectCity : MonoBehaviour
             float subD = cellD * 0.9f;
             BuildPackageRecursive(subs[i], districtGO.transform, subPos, subW, subD, maxRawHeight);
         }
+    }
+
+    private void CreatePackageLabel(
+        string packageName,
+        Transform parent,
+        float width,
+        float depth
+    )
+    {
+        GameObject labelGO = new($"DistrictLabel_{packageName}");
+        labelGO.transform.SetParent(parent, false);
+
+        float scale = Mathf.Min(width, depth) * 0.1f;
+
+        Vector3 localPosition = new(0, BaseDistrictHeight + 0.001f, (-depth / 2f) + 1.5f * scale);
+        Quaternion localRotation = Quaternion.Euler(90f, 0f, 0f);
+
+        labelGO.transform.SetLocalPositionAndRotation(
+            localPosition,
+            localRotation
+        );
+        var text = labelGO.AddComponent<TextMeshPro>();
+        text.text = packageName;
+        text.alignment = TextAlignmentOptions.Center;
+        text.fontSize = 15f;
+        text.color = Color.white;
+
+        labelGO.transform.localScale = Vector3.one * scale;
     }
 
     private Color GetColorForPackage(string packageName)
@@ -299,5 +373,36 @@ public class ProjectCity : MonoBehaviour
             return floor;
         }
         return null;
+    }
+
+    private float GetDepthMetric(MethodNode method) => MethodOrder switch
+    {
+        MethodOrdering.LOC => method.LineCount,
+        MethodOrdering.ParameterCount => method.Parameters.Count,
+        MethodOrdering.AnnotationsCount => method.Annotations.Count,
+        _ => method.LineCount,
+    };
+
+    public void SetMethodOrdering(MethodOrdering ordering)
+    {
+        if (MethodOrder == ordering)
+            return;
+
+        MethodOrder = ordering;
+
+        if (_project != null)
+        {
+            RebuildCity(_project);
+        }
+    }
+
+    public void Destroy()
+    {
+        foreach (Transform child in transform)
+        {
+            Destroy(child.gameObject);
+        }
+
+        _classBuildings.Clear();
     }
 }

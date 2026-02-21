@@ -2,29 +2,54 @@ using MixedReality.Toolkit.SpatialManipulation;
 using MixedReality.Toolkit.UX;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
 
 [RequireComponent(typeof(PressableButton))]
 public class LockUnlockButton : MonoBehaviour
 {
-    [SerializeField] private PressableButton button;
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private Sprite lockedSprite;
     [SerializeField] private Sprite unlockedSprite;
     [SerializeField] private BoundsControl boundsControl;
     [SerializeField] private BoxCollider boxCollider;
 
+    private PressableButton button;
+
     private bool locked = true;
     public bool Locked => locked;
 
     private Coroutine animateRoutine;
+
+    private Transform followTarget;
+    private Vector3 localOffset;
 
     private void Awake()
     {
         button = GetComponent<PressableButton>();
         spriteRenderer.sprite = lockedSprite;
         button.OnClicked.AddListener(Toggle);
+        button.hoverEntered.AddListener(ShowTooltip);
+        button.hoverExited.AddListener(HideTooltip);
         UpdateLockState();
         UpdateVisuals();
+    }
+
+    private void Start()
+    {
+        followTarget = boundsControl.Target != null
+            ? boundsControl.Target.transform
+            : boundsControl.transform;
+        localOffset = followTarget.InverseTransformPoint(transform.position);
+    }
+
+    private void LateUpdate()
+    {
+        if (followTarget == null) return;
+
+        transform.SetPositionAndRotation(
+            followTarget.TransformPoint(localOffset),
+            followTarget.rotation
+        );
     }
 
     public void Toggle()
@@ -37,13 +62,15 @@ public class LockUnlockButton : MonoBehaviour
     private void UpdateLockState()
     {
         if (boundsControl == null) return;
+
         if (locked)
         {
-            boundsControl.EnabledHandles &= ~HandleType.Translation;
+            boundsControl.HandlesActive = false;
             boxCollider.enabled = false;
-        } else
+        }
+        else
         {
-            boundsControl.EnabledHandles |= HandleType.Translation;
+            boundsControl.HandlesActive = true;
             boxCollider.enabled = true;
         }
     }
@@ -78,5 +105,15 @@ public class LockUnlockButton : MonoBehaviour
         }
 
         spriteRenderer.transform.localRotation = targetRotation;
+    }
+
+    private void ShowTooltip(HoverEnterEventArgs arg0)
+    {
+        CitySettingsTooltip.Instance.Show("Lock/Unlock City");
+    }
+
+    private void HideTooltip(HoverExitEventArgs arg0)
+    {
+        CitySettingsTooltip.Instance.Hide();
     }
 }

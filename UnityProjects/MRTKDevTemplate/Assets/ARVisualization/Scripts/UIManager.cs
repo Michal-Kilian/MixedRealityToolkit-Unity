@@ -9,6 +9,13 @@ public class UIManager : MonoBehaviour
     [Header("References")]
     [SerializeField] private GameObject notificationPanel;
     [SerializeField] private TMP_Text textMessage;
+    [SerializeField] private GameObject cityLockUnlock;
+    [SerializeField] private GameObject cityOrdering;
+    [SerializeField] private GameObject cityOrderingPanel;
+    [SerializeField] private GameObject cityDestroy;
+    [SerializeField] private GameObject citySettingsTooltip;
+    [SerializeField] private GameObject flameGraphLockUnlock;
+    [SerializeField] private GameObject activityMapLockUnlock;
 
     private WebSocketManager wsManager;
     private static readonly int maxLines = 3;
@@ -192,5 +199,30 @@ public class UIManager : MonoBehaviour
     {
         if (activeFlameLineConnections.Contains(line))
             activeFlameLineConnections.Remove(line);
+    }
+
+    private void Update()
+    {
+        EnableIfDisplayed(ProjectCity.Instance.IsDisplayed(), cityLockUnlock);
+        EnableIfDisplayed(ProjectCity.Instance.IsDisplayed(), cityOrdering);
+        EnableIfDisplayed(ProjectCity.Instance.IsDisplayed(), cityOrderingPanel);
+        EnableIfDisplayed(ProjectCity.Instance.IsDisplayed(), cityDestroy);
+        EnableIfDisplayed(ProjectCity.Instance.IsDisplayed(), citySettingsTooltip);
+        EnableIfDisplayed(FlameGraph.Instance.IsDisplayed(), flameGraphLockUnlock);
+        EnableIfDisplayed(ActivityMap.Instance.IsDisplayed(), activityMapLockUnlock);
+    }
+
+    private void EnableIfDisplayed(bool displayed, GameObject go)
+    {
+        Debug.Log($"{displayed}, {go.activeInHierarchy}");
+
+        if (!displayed && go.activeInHierarchy)
+        {
+            go.SetActive(false);
+        }
+        if (displayed && !go.activeInHierarchy)
+        {
+            go.SetActive(true);
+        }
     }
 }

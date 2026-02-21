@@ -19,6 +19,8 @@ public class ConnectionStatus : MonoBehaviour
     [SerializeField] private GameObject projectPanel;
     [SerializeField] private TMP_Text projectText;
 
+    [SerializeField] private GameObject tipPanel;
+
     private bool isSpinning;
     private Transform iconTransform;
 
@@ -82,6 +84,23 @@ public class ConnectionStatus : MonoBehaviour
         }
     }
 
+    private void UpdateTipPanel()
+    {
+        if (!tipPanel.activeInHierarchy &&
+            (!ProjectCity.Instance.IsDisplayed() ||
+            webSocketManager.State == ConnectionState.Disconnected))
+        {
+            tipPanel.SetActive(true);
+        }
+
+        if (tipPanel.activeInHierarchy &&
+            ProjectCity.Instance.IsDisplayed() &&
+            webSocketManager.State == ConnectionState.Connected)
+        {
+            tipPanel.SetActive(false);
+        }
+    }
+
     private void Update()
     {
         if (!isSpinning) return;
@@ -91,6 +110,8 @@ public class ConnectionStatus : MonoBehaviour
 
     private void LateUpdate()
     {
+        UpdateTipPanel();
+
         if (mainCamera == null) return;
 
         Vector3 direction = transform.position - mainCamera.transform.position;
