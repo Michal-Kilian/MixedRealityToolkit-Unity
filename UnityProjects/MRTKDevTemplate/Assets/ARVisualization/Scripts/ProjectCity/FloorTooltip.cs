@@ -34,4 +34,15 @@ public class FloorTooltip : MonoBehaviour
     {
         UIManager.UnregisterFloorTooltip(gameObject);
     }
+
+    public void InitializeDistrict(string packageName)
+    {
+        methodLabel.text = packageName;
+
+        transform.localScale = new Vector3(
+            transform.localScale.x / 150f,
+            transform.localScale.y / 150f,
+            transform.localScale.z / 150f
+        );
+    }
 }

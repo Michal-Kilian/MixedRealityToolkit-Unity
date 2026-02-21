@@ -214,8 +214,6 @@ public class UIManager : MonoBehaviour
 
     private void EnableIfDisplayed(bool displayed, GameObject go)
     {
-        Debug.Log($"{displayed}, {go.activeInHierarchy}");
-
         if (!displayed && go.activeInHierarchy)
         {
             go.SetActive(false);

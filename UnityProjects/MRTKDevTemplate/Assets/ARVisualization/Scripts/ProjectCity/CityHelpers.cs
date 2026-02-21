@@ -5,6 +5,8 @@ public class CityHelpers
 {
     public static CityHelpers Instance { get; set; } = new CityHelpers();
 
+    //public static 
+
     public float FindMaxRawBuildingHeight(ProjectStructure project)
     {
         float maxRawHeight = 0f;

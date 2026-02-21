@@ -27,11 +27,12 @@ public class ProjectCity : MonoBehaviour
     [SerializeField] private float FloorGap = 0.002f;
     [SerializeField] private VisualizationModes VisualizationMode = VisualizationModes.Heatmap;
     [SerializeField] private MethodOrdering MethodOrder = MethodOrdering.LOC;
+    [SerializeField] private GameObject districtTooltipPrefab;
+    [SerializeField] private GameObject districtContextMenuPrefab;
 
     [SerializeField] private GameObject floorPrefab;
 
     [SerializeField] private UIManager UIManager;
-    //[SerializeField] private PackageFilterPanel filterPanel;
 
     public float CityTopHeight => MaxBuildingHeight + 1f;
 
@@ -48,7 +49,7 @@ public class ProjectCity : MonoBehaviour
     private HeatmapMode _heatmapMode;
     private IVisualizationMode _activeMode;
 
-    //private HashSet<string> _hiddenPackages = null;
+    private readonly HashSet<string> _hiddenPackages = new();
 
     private bool paused;
 
@@ -98,15 +99,12 @@ public class ProjectCity : MonoBehaviour
     {
         userMethods = new();
 
-        //List<string> packageNames = _project.Packages.Select(p => p.Name).ToList();
-        //filterPanel.Initialize(packageNames);
-
         float maxRawHeight = CityHelpers.Instance.FindMaxRawBuildingHeight(project);
 
         var packages = project.Packages
             .Where(p =>
-                CityHelpers.Instance.HasAnyClassesRecursive(p) //&&
-                //!_hiddenPackages.Contains(p.Name)
+                CityHelpers.Instance.HasAnyClassesRecursive(p) &&
+                !_hiddenPackages.Contains(p.Name)
             )
             .ToList();
 
@@ -165,6 +163,16 @@ public class ProjectCity : MonoBehaviour
         block.transform.localScale = new(width, BaseDistrictHeight, depth);
         block.transform.localPosition = new(0, BaseDistrictHeight / 2f, 0);
         block.GetComponent<Renderer>().material.color = GetColorForPackage(pkg.Name) * 0.8f;
+
+        Vector3 tooltipPos = new(0, BaseDistrictHeight + 0.5f, 0);
+
+        var districtComponent = block.AddComponent<District>();
+        districtComponent.Initialize(
+            pkg.Name,
+            tooltipPos,
+            districtTooltipPrefab,
+            districtContextMenuPrefab
+        );
 
         CreatePackageLabel(pkg.Name, districtGO.transform, width, depth);
 
@@ -404,5 +412,13 @@ public class ProjectCity : MonoBehaviour
         }
 
         _classBuildings.Clear();
+    }
+
+    public void HidePackage(string packageName)
+    {
+        _hiddenPackages.Add(packageName);
+
+        if (_project != null)
+            RebuildCity(_project);
     }
 }

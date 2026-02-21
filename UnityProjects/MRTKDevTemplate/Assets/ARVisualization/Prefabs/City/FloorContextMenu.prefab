@@ -57,7 +57,7 @@ MonoBehaviour:
   classLabel: {fileID: 1940784286578838468}
   openInIDEButton: {fileID: 7923207437763321412}
   closeButton: {fileID: 2159471277610016563}
-  clickThreshold: 0.1
+  clickThreshold: 0.3
 --- !u!223 &3296965529722498439
 Canvas:
   m_ObjectHideFlags: 0

@@ -2,45 +2,38 @@ using MixedReality.Toolkit.UX;
 using TMPro;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
-using System.IO;
 
-public class FloorContextMenu : MonoBehaviour
+public class DistrictContextMenu : MonoBehaviour
 {
-    [SerializeField] private TMP_Text methodLabel;
     [SerializeField] private TMP_Text packageLabel;
-    [SerializeField] private TMP_Text fileLabel;
-    [SerializeField] private TMP_Text classLabel;
-    [SerializeField] private PressableButton openInIDEButton;
+    [SerializeField] private PressableButton hideDistrictButton;
     [SerializeField] private PressableButton closeButton;
     [SerializeField] private float clickThreshold = 0.3f;
 
-    private Floor targetFloor;
+    private District targetDistrict;
     private Camera mainCamera;
-    private float openInIDESelectStartTime;
+    private float hideDistrictSelectStartTime;
     private float closeSelectStartTime;
     private UIManager UIManager;
-    
+
     private void Awake()
     {
         mainCamera = Camera.main;
 
         UIManager = FindFirstObjectByType<UIManager>();
 
-        openInIDEButton.selectEntered.AddListener(OnOpenInIDESelectEntered);
-        openInIDEButton.selectExited.AddListener(OnOpenInIDESelectExited);
+        hideDistrictButton.selectEntered.AddListener(HideDistrictSelectEntered);
+        hideDistrictButton.selectExited.AddListener(HideDistrictSelectExited);
         closeButton.selectEntered.AddListener(OnCloseSelectEntered);
         closeButton.selectExited.AddListener(OnCloseSelectExited);
     }
 
-    public void Initialize(Floor floor)
+    public void Initialize(District district)
     {
-        targetFloor = floor;
+        targetDistrict = district;
 
-        methodLabel.text = floor.methodName;
-        packageLabel.text = floor.packageName;
-        fileLabel.text = Path.GetFileName(floor.path);
-        classLabel.text = floor.className;
-
+        packageLabel.text = district.packageName;
+        
         gameObject.transform.localScale = new(
             gameObject.transform.localScale.x / 150f,
             gameObject.transform.localScale.y / 150f,
@@ -56,17 +49,17 @@ public class FloorContextMenu : MonoBehaviour
         transform.rotation = Quaternion.LookRotation(lookDirection);
     }
 
-    private void OnOpenInIDESelectEntered(SelectEnterEventArgs arg0)
+    private void HideDistrictSelectEntered(SelectEnterEventArgs arg0)
     {
-        openInIDESelectStartTime = Time.time;
+        hideDistrictSelectStartTime = Time.time;
     }
 
-    private void OnOpenInIDESelectExited (SelectExitEventArgs arg0)
+    private void HideDistrictSelectExited(SelectExitEventArgs arg0)
     {
-        float heldTime = Time.time - openInIDESelectStartTime;
+        float heldTime = Time.time - hideDistrictSelectStartTime;
         if (heldTime < clickThreshold)
         {
-            OpenInIde();
+            HideDistrict();
             Close();
         }
     }
@@ -85,10 +78,10 @@ public class FloorContextMenu : MonoBehaviour
         }
     }
 
-    public void OpenInIde()
+    public void HideDistrict()
     {
-        Debug.Log($"Requested opening in IDE: {targetFloor.path}");
-        UIManager.OnOpenInIDEClicked(targetFloor.path, targetFloor.line);
+        Debug.Log($"Hiding package: {targetDistrict.packageName}");
+        ProjectCity.Instance.HidePackage(targetDistrict.packageName);
     }
 
     public void Close()
