@@ -1,6 +1,8 @@
+using Newtonsoft.Json.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 
@@ -19,12 +21,7 @@ public class ProjectCity : MonoBehaviour
     [SerializeField] private bool UseDummyProjectStructure = false;
 
     [Header("City Settings")]
-    [SerializeField] private float MaxSize = 1.0f;
-    [SerializeField] private float MaxBuildingHeight = 0.5f;
-    [SerializeField] private float BaseBuildingHeight = 0.01f;
-    [SerializeField] private float DistrictPadding = 0.02f;
-    [SerializeField] private float BaseDistrictHeight = 0.01f;
-    [SerializeField] private float FloorGap = 0.002f;
+    [SerializeField] private CityConstants CityConstants;
     [SerializeField] private VisualizationModes VisualizationMode = VisualizationModes.Heatmap;
     [SerializeField] private MethodOrdering MethodOrder = MethodOrdering.LOC;
     [SerializeField] private GameObject districtTooltipPrefab;
@@ -34,7 +31,7 @@ public class ProjectCity : MonoBehaviour
 
     [SerializeField] private UIManager UIManager;
 
-    public float CityTopHeight => MaxBuildingHeight + 1f;
+    public float CityTopHeight => CityConstants.MaxBuildingHeight + 1f;
 
     public MethodOrdering SelectedMethodOrdering => MethodOrder;
 
@@ -117,8 +114,8 @@ public class ProjectCity : MonoBehaviour
         int cols = Mathf.CeilToInt(Mathf.Sqrt(packages.Count));
         int rows = Mathf.CeilToInt((float)packages.Count / cols);
 
-        float availableWidth = MaxSize - DistrictPadding * (cols + 1);
-        float availableDepth = MaxSize - DistrictPadding * (rows + 1);
+        float availableWidth = CityConstants.MaxSize - CityConstants.DistrictPadding * (cols + 1);
+        float availableDepth = CityConstants.MaxSize - CityConstants.DistrictPadding * (rows + 1);
 
         float cellW = availableWidth / cols;
         float cellD = availableDepth / rows;
@@ -130,9 +127,9 @@ public class ProjectCity : MonoBehaviour
             {
                 var pkg = packages[index];
                 Vector3 pos = new(
-                    -MaxSize / 2f + DistrictPadding + c * (cellW + DistrictPadding) + cellW / 2f,
+                    -CityConstants.MaxSize / 2f + CityConstants.DistrictPadding + c * (cellW + CityConstants.DistrictPadding) + cellW / 2f,
                     0,
-                    -MaxSize / 2f + DistrictPadding + r * (cellD + DistrictPadding) + cellD / 2f
+                    -CityConstants.MaxSize / 2f + CityConstants.DistrictPadding + r * (cellD + CityConstants.DistrictPadding) + cellD / 2f
                 );
 
                 BuildPackageRecursive(pkg, transform, pos, cellW, cellD, maxRawHeight);
@@ -160,11 +157,11 @@ public class ProjectCity : MonoBehaviour
 
         GameObject block = GameObject.CreatePrimitive(PrimitiveType.Cube);
         block.transform.SetParent(districtGO.transform, false);
-        block.transform.localScale = new(width, BaseDistrictHeight, depth);
-        block.transform.localPosition = new(0, BaseDistrictHeight / 2f, 0);
+        block.transform.localScale = new(width, CityConstants.BaseDistrictHeight, depth);
+        block.transform.localPosition = new(0, CityConstants.BaseDistrictHeight / 2f, 0);
         block.GetComponent<Renderer>().material.color = GetColorForPackage(pkg.Name) * 0.8f;
 
-        Vector3 tooltipPos = new(0, BaseDistrictHeight + 0.5f, 0);
+        Vector3 tooltipPos = new(0, CityConstants.BaseDistrictHeight + 0.5f, 0);
 
         var districtComponent = block.AddComponent<District>();
         districtComponent.Initialize(
@@ -182,12 +179,12 @@ public class ProjectCity : MonoBehaviour
         int cols = Mathf.CeilToInt(Mathf.Sqrt(total));
         int rows = Mathf.CeilToInt((float)total / cols);
 
-        float cellW = (width - DistrictPadding * (cols + 1)) / cols;
-        float cellD = (depth - DistrictPadding * (rows + 1)) / rows;
-        float startX = -width / 2f + DistrictPadding + cellW / 2f;
-        float startZ = -depth / 2f + DistrictPadding + cellD / 2f;
+        float cellW = (width - CityConstants.DistrictPadding * (cols + 1)) / cols;
+        float cellD = (depth - CityConstants.DistrictPadding * (rows + 1)) / rows;
+        float startX = -width / 2f + CityConstants.DistrictPadding + cellW / 2f;
+        float startZ = -depth / 2f + CityConstants.DistrictPadding + cellD / 2f;
 
-        float heightScaleFactor = (maxRawHeight > 0.001f) ? MaxBuildingHeight / maxRawHeight : 0f;
+        float heightScaleFactor = (maxRawHeight > 0.001f) ? CityConstants.MaxBuildingHeight / maxRawHeight : 0f;
 
         for (int i = 0; i < classes.Count; i++)
         {
@@ -195,11 +192,11 @@ public class ProjectCity : MonoBehaviour
             int row = i / cols;
             int col = i % cols;
 
-            float x = startX + col * (cellW + DistrictPadding);
-            float z = startZ + row * (cellD + DistrictPadding);
+            float x = startX + col * (cellW + CityConstants.DistrictPadding);
+            float z = startZ + row * (cellD + CityConstants.DistrictPadding);
 
             float footprint = Mathf.Max(0.05f, 0.02f + cls.FieldCount * 0.005f);
-            float baseY = BaseDistrictHeight;
+            float baseY = CityConstants.BaseDistrictHeight;
 
             GameObject classGO = new($"Class_{cls.Name}");
             classGO.transform.SetParent(districtGO.transform, false);
@@ -220,7 +217,7 @@ public class ProjectCity : MonoBehaviour
             
             float buildingScale = Mathf.Sqrt(normalized);
             
-            float totalScaledHeight = buildingScale * MaxBuildingHeight;
+            float totalScaledHeight = buildingScale * CityConstants.MaxBuildingHeight;
             
             float perUnitScale = totalScaledHeight / totalRawHeight;
 
@@ -281,7 +278,7 @@ public class ProjectCity : MonoBehaviour
                 _methodFloors[key] = floorGO;
                 userMethods.Add(key);
 
-                currentHeight += scaledFloorHeight + FloorGap;
+                currentHeight += scaledFloorHeight + CityConstants.FloorGap;
             }
 
             if (!string.IsNullOrEmpty(cls.ID))
@@ -298,9 +295,9 @@ public class ProjectCity : MonoBehaviour
             int row = (i + offset) / cols;
             int col = (i + offset) % cols;
             Vector3 subPos = new(
-                startX + col * (cellW + DistrictPadding),
-                BaseDistrictHeight,
-                startZ + row * (cellD + DistrictPadding)
+                startX + col * (cellW + CityConstants.DistrictPadding),
+                CityConstants.BaseDistrictHeight,
+                startZ + row * (cellD + CityConstants.DistrictPadding)
             );
 
             float subW = cellW * 0.9f;
@@ -321,7 +318,7 @@ public class ProjectCity : MonoBehaviour
 
         float scale = Mathf.Min(width, depth) * 0.1f;
 
-        Vector3 localPosition = new(0, BaseDistrictHeight + 0.001f, (-depth / 2f) + 1.5f * scale);
+        Vector3 localPosition = new(0, CityConstants.BaseDistrictHeight + 0.001f, (-depth / 2f) + 1.5f * scale);
         Quaternion localRotation = Quaternion.Euler(90f, 0f, 0f);
 
         labelGO.transform.SetLocalPositionAndRotation(
@@ -404,6 +401,11 @@ public class ProjectCity : MonoBehaviour
         }
     }
 
+    public void ResetFilters()
+    {
+        _hiddenPackages.Clear();
+    }
+
     public void Destroy()
     {
         foreach (Transform child in transform)
@@ -412,6 +414,7 @@ public class ProjectCity : MonoBehaviour
         }
 
         _classBuildings.Clear();
+        _hiddenPackages.Clear();
     }
 
     public void HidePackage(string packageName)
@@ -420,5 +423,10 @@ public class ProjectCity : MonoBehaviour
 
         if (_project != null)
             RebuildCity(_project);
+    }
+
+    public void RequestProjectStructure()
+    {
+        UIManager.RequestProjectStructure();
     }
 }

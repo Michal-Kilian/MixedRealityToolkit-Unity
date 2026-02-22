@@ -3,15 +3,16 @@ using TMPro;
 using UnityEngine;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 public class UIManager : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private GameObject notificationPanel;
-    [SerializeField] private TMP_Text textMessage;
     [SerializeField] private GameObject cityLockUnlock;
     [SerializeField] private GameObject cityOrdering;
     [SerializeField] private GameObject cityOrderingPanel;
+    [SerializeField] private GameObject cityRebuild;
+    [SerializeField] private GameObject cityRebuildPanel;
     [SerializeField] private GameObject cityDestroy;
     [SerializeField] private GameObject citySettingsTooltip;
     [SerializeField] private GameObject flameGraphLockUnlock;
@@ -30,35 +31,20 @@ public class UIManager : MonoBehaviour
     private void Awake()
     {
         wsManager = FindObjectOfType<WebSocketManager>();
-
-        HideNotification();
     }
 
-    public void OnProjectOutdatedReceived()
+    public async void RequestProjectStructure()
     {
-        ShowProjectOutdated("Project outdated");
-    }
-
-    public void ShowProjectOutdated(string message)
-    {
-        notificationPanel.SetActive(true);
-        textMessage.text = message;
-    }
-
-    public void HideNotification()
-    {
-        notificationPanel.SetActive(false);
-        textMessage.text = "";
-    }
-
-    public async void OnRegenerateClicked()
-    {
-        HideNotification();
-
         await wsManager.SendMessage(
             type: MessageType.REQUEST_PROJECT_STRUCTURE,
             data: new JObject()
         );
+    }
+
+    public void OnProjectOutdatedReceived()
+    {
+        Debug.Log("Received outdated");
+        cityRebuild.GetComponent<RebuildCityButton>().SetProjectOutdated(true);
     }
 
     public async void OnOpenInIDEClicked(string methodPath, int line)
@@ -206,21 +192,28 @@ public class UIManager : MonoBehaviour
         EnableIfDisplayed(ProjectCity.Instance.IsDisplayed(), cityLockUnlock);
         EnableIfDisplayed(ProjectCity.Instance.IsDisplayed(), cityOrdering);
         EnableIfDisplayed(ProjectCity.Instance.IsDisplayed(), cityOrderingPanel);
+        EnableIfDisplayed(ProjectCity.Instance.IsDisplayed(), cityRebuild);
+        EnableIfDisplayed(ProjectCity.Instance.IsDisplayed(), cityRebuildPanel, hideOnly: true);
         EnableIfDisplayed(ProjectCity.Instance.IsDisplayed(), cityDestroy);
         EnableIfDisplayed(ProjectCity.Instance.IsDisplayed(), citySettingsTooltip);
         EnableIfDisplayed(FlameGraph.Instance.IsDisplayed(), flameGraphLockUnlock);
         EnableIfDisplayed(ActivityMap.Instance.IsDisplayed(), activityMapLockUnlock);
     }
 
-    private void EnableIfDisplayed(bool displayed, GameObject go)
+    private void EnableIfDisplayed(bool displayed, GameObject go, bool hideOnly = false)
     {
+        // Should NOT be visible and IS -> HIDE
         if (!displayed && go.activeInHierarchy)
         {
             go.SetActive(false);
         }
-        if (displayed && !go.activeInHierarchy)
+        if (!hideOnly)
         {
-            go.SetActive(true);
+            // SHOULD be visible and is NOT -> SHOW
+            if (displayed && !go.activeInHierarchy)
+            {
+                go.SetActive(true);
+            }
         }
     }
 }

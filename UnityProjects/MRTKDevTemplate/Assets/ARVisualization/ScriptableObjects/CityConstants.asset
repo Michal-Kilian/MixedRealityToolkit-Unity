@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 535069a7ac8eaca42ab5542681d09bf7, type: 3}
+  m_Name: CityConstants
+  m_EditorClassIdentifier: 
+  MaxSize: 1
+  MaxBuildingHeight: 0.5
+  BaseBuildingHeight: 0.01
+  DistrictPadding: 0.02
+  BaseDistrictHeight: 0.01
+  FloorGap: 0.002

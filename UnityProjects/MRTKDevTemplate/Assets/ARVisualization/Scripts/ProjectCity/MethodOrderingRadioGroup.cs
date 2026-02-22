@@ -39,8 +39,6 @@ public class MethodOrderingRadioGroup : MonoBehaviour
             : boundsControl.transform;
 
         localOffset = followTarget.InverseTransformPoint(transform.position);
-
-        Debug.Log("Follow target: " + followTarget.name);
     }
 
     private void Select(MethodOrdering ordering)

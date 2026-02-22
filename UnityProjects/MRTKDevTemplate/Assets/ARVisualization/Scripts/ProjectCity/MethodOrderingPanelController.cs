@@ -34,6 +34,7 @@ public class MethodOrderingPanelController : MonoBehaviour
         toggleButton.hoverExited.AddListener(HideTooltip);
         originalLocalScale = panel.localScale;
         panel.localScale = Vector3.zero;
+        panel.gameObject.SetActive(true);
 
         radioGroup.OnSelect += TogglePanel;
     }

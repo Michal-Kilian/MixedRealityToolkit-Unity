@@ -1497,7 +1497,7 @@ PrefabInstance:
     - target: {fileID: 7800191923983097074, guid: 948a7c68cd6b19c449613d0541c50852, type: 3}
       propertyPath: boundsRenderer
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 7338280610058875366}
     - target: {fileID: 7800191923983097074, guid: 948a7c68cd6b19c449613d0541c50852, type: 3}
       propertyPath: handlesContainer
       value: 
@@ -1517,6 +1517,11 @@ PrefabInstance:
 --- !u!4 &5671351296789090343 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1445247125800541239, guid: 948a7c68cd6b19c449613d0541c50852, type: 3}
+  m_PrefabInstance: {fileID: 6537576765918694416}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &7338280610058875366 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 4570287462586023414, guid: 948a7c68cd6b19c449613d0541c50852, type: 3}
   m_PrefabInstance: {fileID: 6537576765918694416}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7202710339772163204
