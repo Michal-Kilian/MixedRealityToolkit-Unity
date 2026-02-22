@@ -3,10 +3,9 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
-[RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
+[RequireComponent(typeof(MeshFilter), typeof(MeshRenderer), typeof(StatefulInteractable))]
 public class Floor : MonoBehaviour
 {
-    [SerializeField] private float clickThreshold = 0.3f;
     [SerializeField] private GameObject contextMenuPrefab;
     [SerializeField] private GameObject tooltipPrefab;
 
@@ -22,9 +21,7 @@ public class Floor : MonoBehaviour
     public string methodName;
     public int lineCount;
 
-    private MRTKBaseInteractable interactable;
-
-    private float selectStartTime;
+    private StatefulInteractable interactable;
 
     [SerializeField] private float spawnAnimationDuration = 0.6f;
     [SerializeField] private AnimationCurve spawnEase = AnimationCurve.EaseInOut(0, 0, 1, 1);
@@ -54,9 +51,8 @@ public class Floor : MonoBehaviour
 
         PlaySpawnAnimation(targetLocalPosition, targetLocalScale, spawnDelay);
 
-        interactable = gameObject.AddComponent<MRTKBaseInteractable>();
-        interactable.selectEntered.AddListener(OnSelectEntered);
-        interactable.selectExited.AddListener(OnSelectExited);
+        interactable = gameObject.GetComponent<StatefulInteractable>();
+        interactable.selectEntered.AddListener(OnSelect);
         interactable.hoverEntered.AddListener(OnHoverEntered);
         interactable.hoverExited.AddListener(OnHoverExited);
     }
@@ -101,18 +97,9 @@ public class Floor : MonoBehaviour
         transform.localScale = targetLocalScale;
     }
 
-    private void OnSelectEntered(SelectEnterEventArgs arg0)
+    private void OnSelect(SelectEnterEventArgs arg0)
     {
-        selectStartTime = Time.time;
-    }
-
-    private void OnSelectExited(SelectExitEventArgs arg0)
-    {
-        float heldTime = Time.time - selectStartTime;
-        if (heldTime < clickThreshold)
-        {
-            ShowContextMenu();
-        }
+        ShowContextMenu();
     }
 
     private void OnHoverEntered(HoverEnterEventArgs arg0)
@@ -136,13 +123,7 @@ public class Floor : MonoBehaviour
 
         if (currentTooltip != null) Destroy(currentTooltip);
 
-        Vector3 position = new(
-            transform.position.x,
-            ProjectCity.Instance.CityTopHeight,
-            transform.position.z
-        );
-        currentTooltip = Instantiate(tooltipPrefab, position, Quaternion.identity, transform.parent);
-        currentTooltip.transform.SetLocalPositionAndRotation(tooltipPosition, Quaternion.identity);
+        currentTooltip = Instantiate(tooltipPrefab, tooltipPosition, Quaternion.identity, transform.parent);
         var tooltip = currentTooltip.GetComponent<FloorTooltip>();
         tooltip.Initialize(this);
 

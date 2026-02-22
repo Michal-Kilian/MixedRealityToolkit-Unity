@@ -1,8 +1,5 @@
-using Newtonsoft.Json.Linq;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 
@@ -24,10 +21,9 @@ public class ProjectCity : MonoBehaviour
     [SerializeField] private CityConstants CityConstants;
     [SerializeField] private VisualizationModes VisualizationMode = VisualizationModes.Heatmap;
     [SerializeField] private MethodOrdering MethodOrder = MethodOrdering.LOC;
-    [SerializeField] private GameObject districtTooltipPrefab;
-    [SerializeField] private GameObject districtContextMenuPrefab;
 
     [SerializeField] private GameObject floorPrefab;
+    [SerializeField] private GameObject districtPrefab;
 
     [SerializeField] private UIManager UIManager;
 
@@ -155,20 +151,19 @@ public class ProjectCity : MonoBehaviour
         List<ClassNode> classes = pkg.Files?.SelectMany(f => f.Classes).ToList() ?? new List<ClassNode>();
         List<PackageNode> subs = pkg.SubPackages ?? new List<PackageNode>();
 
-        GameObject block = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        block.transform.SetParent(districtGO.transform, false);
+        GameObject block = Instantiate(districtPrefab, districtGO.transform);
         block.transform.localScale = new(width, CityConstants.BaseDistrictHeight, depth);
         block.transform.localPosition = new(0, CityConstants.BaseDistrictHeight / 2f, 0);
-        block.GetComponent<Renderer>().material.color = GetColorForPackage(pkg.Name) * 0.8f;
 
-        Vector3 tooltipPos = new(0, CityConstants.BaseDistrictHeight + 0.5f, 0);
+        var renderer = block.GetComponent<Renderer>();
+        renderer.material.color = GetColorForPackage(pkg.Name) * 0.8f;
 
-        var districtComponent = block.AddComponent<District>();
+        Vector3 tooltipPos = new(0, CityConstants.BaseDistrictHeight + 0.25f, 0);
+
+        var districtComponent = block.GetComponent<District>();
         districtComponent.Initialize(
             pkg.Name,
-            tooltipPos,
-            districtTooltipPrefab,
-            districtContextMenuPrefab
+            tooltipPos
         );
 
         CreatePackageLabel(pkg.Name, districtGO.transform, width, depth);
@@ -239,8 +234,6 @@ public class ProjectCity : MonoBehaviour
                 float maxDepth = footprint;
                 float floorDepth = Mathf.Lerp(minDepth, maxDepth, curvedDepth);
 
-                Vector3 tooltipPosition = new(x, baseY + totalScaledHeight + 0.05f, z);
-
                 float backZ = footprint / 2f;
                 float localZ = backZ - (floorDepth / 2f);
                 float centerY = currentHeight + scaledFloorHeight / 2f;
@@ -250,6 +243,9 @@ public class ProjectCity : MonoBehaviour
                 Vector3 targetPosition = new(0f, centerY, localZ);
 
                 float delay = j * spawnDelayStep;
+
+                Vector3 tooltipLocalForTop = new(0f, baseY + totalScaledHeight + 0.1f, 0f);
+                var tooltipWorldPosition = classGO.transform.TransformPoint(tooltipLocalForTop);
 
                 GameObject floorGO = Instantiate(floorPrefab, classGO.transform);
                 Floor floor = floorGO.GetComponent<Floor>();
@@ -262,7 +258,7 @@ public class ProjectCity : MonoBehaviour
                     lineCount: method.LineCount,
                     targetLocalPosition: targetPosition,
                     targetLocalScale: targetScale,
-                    tooltipPosition: tooltipPosition,
+                    tooltipPosition: tooltipWorldPosition,
                     spawnDelay: delay
                 );
 
@@ -428,5 +424,11 @@ public class ProjectCity : MonoBehaviour
     public void RequestProjectStructure()
     {
         UIManager.RequestProjectStructure();
+    }
+
+    public void RebuildCurrentCity()
+    {
+        if (_project != null)
+            RebuildCity(_project);
     }
 }

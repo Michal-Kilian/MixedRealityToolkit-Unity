@@ -58,6 +58,10 @@ public class RebuildCityButton : MonoBehaviour
             ProjectCity.Instance.RequestProjectStructure();
             SetProjectOutdated(false);
         }
+        else
+        {
+            ProjectCity.Instance.RebuildCurrentCity();
+        }
     }
 
     private void ShowTooltip(HoverEnterEventArgs arg0)

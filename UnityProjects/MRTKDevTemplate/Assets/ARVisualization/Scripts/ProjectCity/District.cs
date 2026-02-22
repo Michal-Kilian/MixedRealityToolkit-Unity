@@ -5,7 +5,8 @@ using UnityEngine.XR.Interaction.Toolkit;
 [RequireComponent(typeof(MeshRenderer))]
 public class District : MonoBehaviour
 {
-    [SerializeField] private float clickThreshold = 0.3f;
+    [SerializeField] private GameObject contextMenuPrefab;
+    [SerializeField] private GameObject tooltipPrefab;
 
     private GameObject currentContextMenu;
     private GameObject currentTooltip;
@@ -14,44 +15,25 @@ public class District : MonoBehaviour
 
     public string packageName;
 
-    private MRTKBaseInteractable interactable;
-
-    private float selectStartTime;
-
-    private GameObject tooltipPrefab;
-    private GameObject contextMenuPrefab;
+    private StatefulInteractable interactable;
 
     public void Initialize(
         string packageName,
-        Vector3 tooltipLocalPosition,
-        GameObject tooltipPrefab,
-        GameObject contextMenuPrefab
+        Vector3 tooltipPosition
     )
     {
         this.packageName = packageName;
-        this.tooltipPosition = tooltipLocalPosition;
-        this.tooltipPrefab = tooltipPrefab;
-        this.contextMenuPrefab = contextMenuPrefab;
+        this.tooltipPosition = tooltipPosition;
 
-        interactable = gameObject.AddComponent<MRTKBaseInteractable>();
+        interactable = gameObject.GetComponent<StatefulInteractable>();
         interactable.hoverEntered.AddListener(OnHoverEntered);
         interactable.hoverExited.AddListener(OnHoverExited);
-        interactable.selectEntered.AddListener(OnSelectEntered);
-        interactable.selectExited.AddListener(OnSelectExited);
+        interactable.selectEntered.AddListener(OnSelect);
     }
 
-    private void OnSelectEntered(SelectEnterEventArgs arg0)
+    private void OnSelect(SelectEnterEventArgs arg0)
     {
-        selectStartTime = Time.time;
-    }
-
-    private void OnSelectExited(SelectExitEventArgs arg0)
-    {
-        float heldTime = Time.time - selectStartTime;
-        if (heldTime < clickThreshold)
-        {
-            ShowContextMenu();
-        }
+        ShowContextMenu();
     }
 
     private void OnHoverEntered(HoverEnterEventArgs args)

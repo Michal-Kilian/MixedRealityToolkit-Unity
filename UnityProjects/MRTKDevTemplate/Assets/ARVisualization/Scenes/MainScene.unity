@@ -2091,6 +2091,7 @@ MonoBehaviour:
   districtTooltipPrefab: {fileID: 53208675032498891, guid: e7e991f51a7742c4c843ec19a85f991a, type: 3}
   districtContextMenuPrefab: {fileID: 53208675032498891, guid: 66cf4ef1a4cb88e42b80703cc5c024e3, type: 3}
   floorPrefab: {fileID: 4093131329086939374, guid: 27f4f6355bd419c43a57e95543ca6c7e, type: 3}
+  districtPrefab: {fileID: 4093131329086939374, guid: 8c04376fced85a74181500ed413733df, type: 3}
   UIManager: {fileID: 1614698176}
 --- !u!4 &1037479745
 Transform:
