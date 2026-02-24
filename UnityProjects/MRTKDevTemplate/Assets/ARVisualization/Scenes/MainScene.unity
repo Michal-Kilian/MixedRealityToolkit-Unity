@@ -122,6 +122,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+<<<<<<< HEAD
 --- !u!1 &6913254 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5092507606858315802, guid: c25d8f2d22117bd40ad824684551fbde, type: 3}
@@ -133,6 +134,9 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 1266130700}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &94363699
+=======
+--- !u!1 &153550937
+>>>>>>> simdev
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -140,23 +144,38 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+<<<<<<< HEAD
   - component: {fileID: 94363700}
   - component: {fileID: 94363703}
   - component: {fileID: 94363702}
   - component: {fileID: 94363701}
   m_Layer: 0
   m_Name: UX.Button.FrontplateHighlight
+=======
+  - component: {fileID: 153550938}
+  - component: {fileID: 153550944}
+  - component: {fileID: 153550943}
+  - component: {fileID: 153550942}
+  - component: {fileID: 153550945}
+  m_Layer: 0
+  m_Name: CompositionLayer
+>>>>>>> simdev
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+<<<<<<< HEAD
 --- !u!4 &94363700
+=======
+--- !u!4 &153550938
+>>>>>>> simdev
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< HEAD
   m_GameObject: {fileID: 94363699}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
@@ -167,11 +186,24 @@ Transform:
   m_Father: {fileID: 2034713071}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &94363701
+=======
+  m_GameObject: {fileID: 153550937}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.38268343, z: -0, w: 0.92387956}
+  m_LocalPosition: {x: 1.5, y: 1.5, z: 1.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1691495730}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &153550942
+>>>>>>> simdev
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< HEAD
   m_GameObject: {fileID: 94363699}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -305,11 +337,65 @@ RectTransform:
   m_SizeDelta: {x: 0.035, y: 0.01}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &170303813
+=======
+  m_GameObject: {fileID: 153550937}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45327f2c44c145df809bbdd9829b456d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SourceTexture: 0
+  m_TargetEye: 0
+  m_LeftTexture: {fileID: 8400000, guid: df0aa8f88587f234c8168ffd319b597a, type: 2}
+  m_RightTexture: {fileID: 8400000, guid: df0aa8f88587f234c8168ffd319b597a, type: 2}
+  m_InEditorEmulation: 0
+  m_CustomRects: 0
+  m_Resolution: {x: 0, y: 0}
+  m_LeftEyeSourceRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  m_RightEyeSourceRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  m_LeftEyeDestinationRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  m_RightEyeDestinationRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  m_CropToAspect: 0
+--- !u!114 &153550943
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 153550937}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c239b33ee5aee77488aadc51463c91de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &153550944
+>>>>>>> simdev
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< HEAD
   m_GameObject: {fileID: 170303811}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -398,10 +484,39 @@ MonoBehaviour:
   m_maskType: 0
 --- !u!23 &170303814
 MeshRenderer:
+=======
+  m_GameObject: {fileID: 153550937}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3adf0bb75a444c61bde2e7841591bf41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UICanvas: {fileID: 0}
+  m_UIMirrorComponent: {fileID: 0}
+  m_LayerOutline: {fileID: 153550943}
+  m_Order: 1
+  m_LayerData:
+    rid: 6388336936232943617
+  m_PlatformLayerDataKeys: []
+  m_PlatformLayerDataTexts: []
+  m_PlatformLayerDataBinary: 
+  references:
+    version: 2
+    RefIds:
+    - rid: 6388336936232943617
+      type: {class: QuadLayerData, ns: Unity.XR.CompositionLayers.Layers, asm: Unity.XR.CompositionLayers}
+      data:
+        m_BlendType: 0
+        m_Size: {x: 1.28, y: 0.72}
+        m_ApplyTransformScale: 0
+--- !u!114 &153550945
+MonoBehaviour:
+>>>>>>> simdev
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< HEAD
   m_GameObject: {fileID: 170303811}
   m_Enabled: 1
   m_CastShadows: 0
@@ -438,6 +553,17 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+=======
+  m_GameObject: {fileID: 153550937}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd4163df316a72745a66f27f8b514df9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sourceTexture: {fileID: 153550942}
+  texture: {fileID: 8400000, guid: df0aa8f88587f234c8168ffd319b597a, type: 2}
+  tmpTexture: {fileID: 8400000, guid: 241033cfaaf005b41b5d5405fd89c44e, type: 2}
+>>>>>>> simdev
 --- !u!1 &190595216
 GameObject:
   m_ObjectHideFlags: 0
@@ -467,9 +593,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: faf83d99c565d7a448981559450028bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+<<<<<<< HEAD
   shouldConnect: 1
   serverHost: localhost
   serverPort: 8765
+=======
+  shouldConnect: 0
+>>>>>>> simdev
   uiManager: {fileID: 1614698176}
   heartbeatInterval: 3
   heartbeatTimeout: 10
@@ -748,8 +878,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 269338367}
   serializedVersion: 2
+<<<<<<< HEAD
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -0.5, z: 0}
+=======
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+>>>>>>> simdev
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1193,6 +1328,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 404949538145338360, guid: 4d7e2f87fefe0ba468719b15288b46e7, type: 3}
+      propertyPath: opaqueDisplay.clearMode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 404949538145338360, guid: 4d7e2f87fefe0ba468719b15288b46e7, type: 3}
+      propertyPath: opaqueDisplay.qualityLevel
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 404949538145338360, guid: 4d7e2f87fefe0ba468719b15288b46e7, type: 3}
+      propertyPath: opaqueDisplay.farPlaneDistance
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 2351505566903569412, guid: 4d7e2f87fefe0ba468719b15288b46e7, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2351505567455720332, guid: 4d7e2f87fefe0ba468719b15288b46e7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1237,10 +1388,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: MRTK XR Rig
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 3712792914886690938, guid: 4d7e2f87fefe0ba468719b15288b46e7, type: 3}
+      propertyPath: m_RequestedTrackingOriginMode
+      value: 2
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 2813607766961918107, guid: 4d7e2f87fefe0ba468719b15288b46e7, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2351505566771328562, guid: 4d7e2f87fefe0ba468719b15288b46e7, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1484592365}
   m_SourcePrefab: {fileID: 100100000, guid: 4d7e2f87fefe0ba468719b15288b46e7, type: 3}
 --- !u!1 &527909132
 GameObject:
@@ -2110,8 +2269,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86ab91f2fc0b2a9408dc11575f08a1af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+<<<<<<< HEAD
   UseDummyProjectStructure: 0
   CityConstants: {fileID: 11400000, guid: a02801eaf0e4f564e958a6682116c285, type: 2}
+=======
+  UseDummyProjectStructure: 1
+  MaxSize: 1
+  MaxBuildingHeight: 0.5
+  BaseBuildingHeight: 0.01
+  DistrictPadding: 0.02
+  BaseDistrictHeight: 0.01
+  FloorGap: 0.002
+>>>>>>> simdev
   VisualizationMode: 1
   MethodOrder: 0
   floorPrefab: {fileID: 4093131329086939374, guid: 27f4f6355bd419c43a57e95543ca6c7e, type: 3}
@@ -2945,7 +3114,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1324932457
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3156,6 +3325,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1214529608091387485, guid: 0d3b2fd2079cd514d8dbce654f929320, type: 3}
   m_PrefabInstance: {fileID: 772000987}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< HEAD
 --- !u!1001 &1492265535
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3334,11 +3504,20 @@ GameObject:
   m_PrefabInstance: {fileID: 1492265535}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1492265548
+=======
+--- !u!1 &1484592358 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2351505566771328562, guid: 4d7e2f87fefe0ba468719b15288b46e7, type: 3}
+  m_PrefabInstance: {fileID: 525252187}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1484592365
+>>>>>>> simdev
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< HEAD
   m_GameObject: {fileID: 1492265537}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -3352,10 +3531,27 @@ MonoBehaviour:
   boundsControl: {fileID: 1308133584}
 --- !u!114 &1492265558
 MonoBehaviour:
+=======
+  m_GameObject: {fileID: 1484592358}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4966719baa26e4b0e8231a24d9bd491a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_FocusMode: -1
+  m_LightEstimationMode: -1
+  m_AutoFocus: 1
+  m_LightEstimation: 0
+  m_FacingDirection: 1
+  m_RenderMode: 0
+--- !u!1 &1600896940
+GameObject:
+>>>>>>> simdev
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< HEAD
   m_GameObject: {fileID: 1492265537}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -3541,11 +3737,41 @@ Transform:
   m_PrefabInstance: {fileID: 1570158200}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1570158211
+=======
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1600896941}
+  - component: {fileID: 1600896943}
+  m_Layer: 0
+  m_Name: NDI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1600896941
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1600896940}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1691495730}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1600896943
+>>>>>>> simdev
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< HEAD
   m_GameObject: {fileID: 583919684}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -3566,6 +3792,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 256
+=======
+  m_GameObject: {fileID: 1600896940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a09ab5fc64402d49b12d170a7577986, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ndiName: DESKTOP-ULBMTBR (Intel Graphics 1)
+  _targetTexture: {fileID: 8400000, guid: 241033cfaaf005b41b5d5405fd89c44e, type: 2}
+  _targetRenderer: {fileID: 0}
+  _targetMaterialProperty: 
+  _resources: {fileID: 11400000, guid: 69304b86950074db7ba8caba75214004, type: 2}
+>>>>>>> simdev
 --- !u!1 &1614698174
 GameObject:
   m_ObjectHideFlags: 0
@@ -3610,6 +3849,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1080c45d87a4284ea13441e7ab09ce1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+<<<<<<< HEAD
   cityLockUnlock: {fileID: 251758170}
   cityOrdering: {fileID: 1098362533}
   cityOrderingPanel: {fileID: 527909132}
@@ -4052,6 +4292,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 64
 --- !u!1 &1723884954
+=======
+  notificationPanel: {fileID: 999504980}
+  textMessage: {fileID: 1903688511}
+--- !u!1 &1691495729
+>>>>>>> simdev
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4059,22 +4304,34 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+<<<<<<< HEAD
   - component: {fileID: 1723884955}
   - component: {fileID: 1723884957}
   - component: {fileID: 1723884956}
   m_Layer: 0
   m_Name: Title
+=======
+  - component: {fileID: 1691495730}
+  m_Layer: 0
+  m_Name: Mirror
+>>>>>>> simdev
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+<<<<<<< HEAD
 --- !u!224 &1723884955
 RectTransform:
+=======
+--- !u!4 &1691495730
+Transform:
+>>>>>>> simdev
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< HEAD
   m_GameObject: {fileID: 1723884954}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -4446,6 +4703,19 @@ MonoBehaviour:
   unlockedSprite: {fileID: 21300000, guid: c6c47a3be151e3a49b453e77e8c8ad08, type: 3}
   boundsControl: {fileID: 1624610838}
   boxCollider: {fileID: 1920430610}
+=======
+  m_GameObject: {fileID: 1691495729}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1600896941}
+  - {fileID: 153550938}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+>>>>>>> simdev
 --- !u!1001 &1789277895
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5638,5 +5908,9 @@ SceneRoots:
   - {fileID: 1614698175}
   - {fileID: 190595218}
   - {fileID: 1324932458}
+<<<<<<< HEAD
   - {fileID: 1666358802}
   - {fileID: 1041953957}
+=======
+  - {fileID: 1691495730}
+>>>>>>> simdev

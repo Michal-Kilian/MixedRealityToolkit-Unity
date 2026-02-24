@@ -22,9 +22,12 @@
     "com.unity.ugui": "1.0.0",
     "com.unity.xr.arcore": "5.2.0",
     "com.unity.xr.arfoundation": "5.2.0",
+    "com.unity.xr.compositionlayers": "2.3.0",
     "com.unity.xr.interaction.toolkit": "2.6.5",
     "com.unity.xr.management": "4.4.0",
+    "com.unity.xr.meta-openxr": "1.0.4",
     "com.unity.xr.openxr": "1.14.3",
+    "jp.keijiro.klak.ndi": "2.1.6",
     "org.mixedrealitytoolkit.accessibility": "file:../../../org.mixedrealitytoolkit.accessibility",
     "org.mixedrealitytoolkit.audio": "file:../../../org.mixedrealitytoolkit.audio",
     "org.mixedrealitytoolkit.core": "file:../../../org.mixedrealitytoolkit.core",
@@ -85,5 +88,14 @@
     "org.mixedrealitytoolkit.uxcomponents.noncanvas",
     "org.mixedrealitytoolkit.uxcore",
     "org.mixedrealitytoolkit.windowsspeech"
+  ],
+  "scopedRegistries": [
+    {
+      "name": "Keijiro",
+      "url": "https://registry.npmjs.com",
+      "scopes": [
+        "jp.keijiro"
+      ]
+    }
   ]
 }
