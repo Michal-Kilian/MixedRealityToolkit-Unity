@@ -21,6 +21,9 @@ public class ConnectionStatus : MonoBehaviour
 
     [SerializeField] private GameObject tipPanel;
 
+    [SerializeField] private PressableButton enableLoggingButton;
+    [SerializeField] private SpriteRenderer enableLoggingRenderer;
+
     private bool isSpinning;
     private Transform iconTransform;
 
@@ -32,11 +35,14 @@ public class ConnectionStatus : MonoBehaviour
     {
         iconTransform = statusIcon.transform;
         connectButton.OnClicked.AddListener(OnConnectClicked);
+        enableLoggingButton.OnClicked.AddListener(OnEnableLoggingClicked);
     }
 
     private void Start()
     {
         mainCamera = Camera.main;
+        if (ExperimentManager.Instance != null)
+            UpdateEnableLoggingUI(ExperimentManager.Instance.DefaultLoggingEnabled);
     }
 
     private void OnEnable()
@@ -44,6 +50,8 @@ public class ConnectionStatus : MonoBehaviour
         webSocketManager.OnConnectionStateChanged += UpdateUI;
         webSocketManager.OnProjectSnapshotReceived += OnProjectSnapshot;
         UpdateUI(webSocketManager.State);
+        if (ExperimentManager.Instance != null)
+            UpdateEnableLoggingUI(ExperimentManager.Instance.DefaultLoggingEnabled);
     }
 
     private void OnDisable()
@@ -134,6 +142,8 @@ public class ConnectionStatus : MonoBehaviour
 
     private void OnConnectClicked()
     {
+        ExperimentManager.Instance.LogInteraction(InteractionType.Reconnect);
+
         webSocketManager.Reconnect();
     }
 
@@ -149,5 +159,19 @@ public class ConnectionStatus : MonoBehaviour
     {
         projectPanel.SetActive(false);
         projectText.text = "";
+    }
+
+    private void OnEnableLoggingClicked()
+    {
+        bool newEnable = !ExperimentManager.Instance.EnableLogging;
+        ExperimentManager.Instance.SetEnableLogging(newEnable);
+
+        UpdateEnableLoggingUI(newEnable);
+    }
+
+    private void UpdateEnableLoggingUI(bool enable)
+    {
+        enableLoggingRenderer.sprite = enable ? connectedIcon : disconnectedIcon;
+        enableLoggingRenderer.material.color = enable ? Color.green : Color.red;
     }
 }

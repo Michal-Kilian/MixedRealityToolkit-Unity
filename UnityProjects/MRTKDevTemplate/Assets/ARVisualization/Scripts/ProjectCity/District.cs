@@ -1,4 +1,5 @@
 using MixedReality.Toolkit;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
@@ -33,11 +34,21 @@ public class District : MonoBehaviour
 
     private void OnSelect(SelectEnterEventArgs arg0)
     {
+        ExperimentManager.Instance.LogInteraction(
+            InteractionType.CityDistrictSelect,
+            packageName
+        );
+
         ShowContextMenu();
     }
 
     private void OnHoverEntered(HoverEnterEventArgs args)
     {
+        ExperimentManager.Instance.LogInteraction(
+            InteractionType.CityDistrictHover,
+            packageName
+        );
+
         ShowTooltip();
     }
 

@@ -66,6 +66,12 @@ public class FloorContextMenu : MonoBehaviour
         float heldTime = Time.time - openInIDESelectStartTime;
         if (heldTime < clickThreshold)
         {
+            ExperimentManager.Instance.LogInteraction(
+                InteractionType.CityFloorOpenInIDE,
+                targetFloor.packageName,
+                targetFloor.className,
+                targetFloor.methodName
+            );
             OpenInIde();
             Close();
         }

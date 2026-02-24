@@ -1,6 +1,7 @@
 using MixedReality.Toolkit.UX;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.XR.Interaction.Toolkit;
 
 public class DistrictContextMenu : MonoBehaviour
@@ -9,18 +10,20 @@ public class DistrictContextMenu : MonoBehaviour
     [SerializeField] private PressableButton hideDistrictButton;
     [SerializeField] private PressableButton closeButton;
     [SerializeField] private float clickThreshold = 0.3f;
+    [SerializeField] private RawImage hideDistrictImage;
+    [SerializeField] private Color enabledColor;
+    [SerializeField] private Color disabledColor;
 
     private District targetDistrict;
     private Camera mainCamera;
     private float hideDistrictSelectStartTime;
     private float closeSelectStartTime;
-    private UIManager UIManager;
+
+    private bool hideDistrictEnabled = false;
 
     private void Awake()
     {
         mainCamera = Camera.main;
-
-        UIManager = FindFirstObjectByType<UIManager>();
 
         hideDistrictButton.selectEntered.AddListener(HideDistrictSelectEntered);
         hideDistrictButton.selectExited.AddListener(HideDistrictSelectExited);
@@ -41,6 +44,17 @@ public class DistrictContextMenu : MonoBehaviour
         );
     }
 
+    private void Update()
+    {
+        EnableHideDistrict(!ProjectCity.Instance.HasOneOrNonePackageVisible());
+    }
+
+    private void EnableHideDistrict(bool enable)
+    {
+        hideDistrictEnabled = enable;
+        hideDistrictImage.color = enable ? enabledColor : disabledColor;
+    }
+
     private void LateUpdate()
     {
         if (mainCamera == null) return;
@@ -59,6 +73,7 @@ public class DistrictContextMenu : MonoBehaviour
         float heldTime = Time.time - hideDistrictSelectStartTime;
         if (heldTime < clickThreshold)
         {
+            if (!hideDistrictEnabled) return;
             HideDistrict();
             Close();
         }
@@ -81,6 +96,12 @@ public class DistrictContextMenu : MonoBehaviour
     public void HideDistrict()
     {
         Debug.Log($"Hiding package: {targetDistrict.packageName}");
+
+        ExperimentManager.Instance.LogInteraction(
+            InteractionType.CityDistrictHide,
+            targetDistrict.packageName
+        );
+
         ProjectCity.Instance.HidePackage(targetDistrict.packageName);
     }
 

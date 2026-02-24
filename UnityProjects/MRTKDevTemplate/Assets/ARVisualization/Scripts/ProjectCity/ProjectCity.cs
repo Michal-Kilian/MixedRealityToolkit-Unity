@@ -431,4 +431,6 @@ public class ProjectCity : MonoBehaviour
         if (_project != null)
             RebuildCity(_project);
     }
+
+    public bool HasOneOrNonePackageVisible() => (_project.Packages.Count - _hiddenPackages.Count) == 1;
 }

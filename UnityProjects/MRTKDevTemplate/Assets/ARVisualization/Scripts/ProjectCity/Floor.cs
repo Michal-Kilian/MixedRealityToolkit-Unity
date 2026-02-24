@@ -99,11 +99,23 @@ public class Floor : MonoBehaviour
 
     private void OnSelect(SelectEnterEventArgs arg0)
     {
+        ExperimentManager.Instance.LogInteraction(
+            InteractionType.CityFloorSelect,
+            packageName,
+            className,
+            methodName
+        );
         ShowContextMenu();
     }
 
     private void OnHoverEntered(HoverEnterEventArgs arg0)
     {
+        ExperimentManager.Instance.LogInteraction(
+            InteractionType.CityFloorHover,
+            packageName,
+            className,
+            methodName
+        );
         ToggleTooltip(true);
     }
 
