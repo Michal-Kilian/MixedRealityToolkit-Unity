@@ -128,14 +128,19 @@ public class Floor : MonoBehaviour
     {
         if (!show)
         {
-            Destroy(currentTooltip);
-            UIManager.UnregisterFloorTooltip(currentTooltip);
+            if (currentTooltip != null)
+            {
+                UIManager.UnregisterFloorTooltip(currentTooltip);
+                Destroy(currentTooltip);
+            }
             return;
         }
 
         if (currentTooltip != null) Destroy(currentTooltip);
 
-        currentTooltip = Instantiate(tooltipPrefab, tooltipPosition, Quaternion.identity, transform.parent);
+        currentTooltip = Instantiate(tooltipPrefab, transform.parent);
+
+        currentTooltip.transform.SetLocalPositionAndRotation(tooltipPosition, Quaternion.identity);
         var tooltip = currentTooltip.GetComponent<FloorTooltip>();
         tooltip.Initialize(this);
 

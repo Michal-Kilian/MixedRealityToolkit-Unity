@@ -19,7 +19,7 @@ public class WebSocketManager : MonoBehaviour
 {
     [Header("Connection")]
     [SerializeField] private bool shouldConnect = false;
-    [SerializeField] private string serverHost = "localhost";
+    [SerializeField] private string serverHost = "localhost"; //192.168.88.40
     [SerializeField] private int serverPort = 8765;
 
     [SerializeField] private UIManager uiManager;

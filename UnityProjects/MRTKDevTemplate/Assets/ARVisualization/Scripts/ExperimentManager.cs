@@ -26,6 +26,9 @@ public enum InteractionType
     CityFloorOpenInIDE          = 1 << 10,
     CityDistrictHide            = 1 << 11,
 
+    ActivityMapMethodSelect     = 1 << 12,
+    ActivityMapMethodHover      = 1 << 13,
+
     All =
         CityFloorSelect |
         CityFloorHover |
@@ -37,7 +40,9 @@ public enum InteractionType
         CityRebuild |
         CityDestroy |
         CityFloorOpenInIDE |
-        CityDistrictHide
+        CityDistrictHide |
+        ActivityMapMethodSelect |
+        ActivityMapMethodHover
 }
 
 [Serializable]

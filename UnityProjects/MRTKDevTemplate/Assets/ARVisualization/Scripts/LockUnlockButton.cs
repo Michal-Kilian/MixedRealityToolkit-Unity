@@ -12,6 +12,7 @@ public class LockUnlockButton : MonoBehaviour
     [SerializeField] private Sprite unlockedSprite;
     [SerializeField] private BoundsControl boundsControl;
     [SerializeField] private BoxCollider boxCollider;
+    [SerializeField] private Vector3 additionalRotation = new(0f, 0f, 0f);
 
     private PressableButton button;
 
@@ -48,7 +49,7 @@ public class LockUnlockButton : MonoBehaviour
 
         transform.SetPositionAndRotation(
             followTarget.TransformPoint(localOffset),
-            followTarget.rotation
+            followTarget.rotation * Quaternion.Euler(additionalRotation)
         );
     }
 

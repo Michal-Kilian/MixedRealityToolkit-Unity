@@ -245,7 +245,6 @@ public class ProjectCity : MonoBehaviour
                 float delay = j * spawnDelayStep;
 
                 Vector3 tooltipLocalForTop = new(0f, baseY + totalScaledHeight + 0.1f, 0f);
-                var tooltipWorldPosition = classGO.transform.TransformPoint(tooltipLocalForTop);
 
                 GameObject floorGO = Instantiate(floorPrefab, classGO.transform);
                 Floor floor = floorGO.GetComponent<Floor>();
@@ -258,7 +257,7 @@ public class ProjectCity : MonoBehaviour
                     lineCount: method.LineCount,
                     targetLocalPosition: targetPosition,
                     targetLocalScale: targetScale,
-                    tooltipPosition: tooltipWorldPosition,
+                    tooltipPosition: tooltipLocalForTop,
                     spawnDelay: delay
                 );
 

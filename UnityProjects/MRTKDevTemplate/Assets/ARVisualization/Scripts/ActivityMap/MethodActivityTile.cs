@@ -108,6 +108,11 @@ public class MethodActivityTile : MonoBehaviour
 
     private void OnHoverEntered(HoverEnterEventArgs arg0)
     {
+        ExperimentManager.Instance.LogInteraction(
+            InteractionType.ActivityMapMethodHover,
+            methodName: methodName
+        );
+
         ToggleTooltip(true);
     }
 
@@ -144,6 +149,11 @@ public class MethodActivityTile : MonoBehaviour
         float heldTime = Time.time - selectStartTime;
         if (heldTime < clickThreshold)
         {
+            ExperimentManager.Instance.LogInteraction(
+                InteractionType.ActivityMapMethodSelect,
+                methodName: methodName
+            );
+
             ViewInCity();
         }
     }
