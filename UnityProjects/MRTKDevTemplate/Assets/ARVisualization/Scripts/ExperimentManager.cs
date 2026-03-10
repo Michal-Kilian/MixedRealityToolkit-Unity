@@ -68,6 +68,8 @@ public class ExperimentManager : MonoBehaviour
 
     private readonly List<InteractionEvent> eventBuffer = new();
     private string sessionId;
+    public string SessionID => sessionId;
+
     private string filePath;
 
     private float sessionStartTime;
@@ -78,6 +80,8 @@ public class ExperimentManager : MonoBehaviour
     public bool DefaultLoggingEnabled => defaultLoggingEnabled;
 
     private const string CSV_HEADER = "sessionId,type,package,class,method,key,timestamp,unix\n";
+
+    public string LogDirectory => Path.Combine(Application.persistentDataPath, "ExperimentLogs");
 
     private void Awake()
     {
@@ -97,15 +101,11 @@ public class ExperimentManager : MonoBehaviour
         sessionId = DateTime.Now.ToString("yyyyMMdd_HHmmss");
         sessionStartTime = Time.time;
 
-        string directory = Path.Combine(
-            Application.persistentDataPath,
-            "ExperimentLogs"
-        );
+        if (!Directory.Exists(LogDirectory))
+            Directory.CreateDirectory(LogDirectory);
 
-        if (!Directory.Exists(directory))
-            Directory.CreateDirectory(directory);
-
-        filePath = Path.Combine(directory, $"session_{sessionId}.csv");
+        string safeSessionId = MakeSafeFileName(sessionId);
+        filePath = Path.Combine(LogDirectory, $"session_{safeSessionId}.csv");
 
         if (!File.Exists(filePath))
         {
@@ -195,6 +195,16 @@ public class ExperimentManager : MonoBehaviour
         {
             value = value.Replace("\"", "\"\"");
             return $"\"{value}\"";
+        }
+
+        return value;
+    }
+
+    private string MakeSafeFileName(string value)
+    {
+        foreach (char c in Path.GetInvalidFileNameChars())
+        {
+            value = value.Replace(c, '_');
         }
 
         return value;
