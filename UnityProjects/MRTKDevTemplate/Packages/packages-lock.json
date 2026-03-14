@@ -348,14 +348,13 @@
       },
       "url": "https://packages.unity.com"
     },
-    "com.unity.xr.picoxr": {
-      "version": "file:C:/Users/kilia/Downloads/PICO Unity Integration SDK-3.4.0-20260226",
+    "com.unity.xr.openxr.picoxr": {
+      "version": "file:C:/Users/jvin/Downloads/Unity OpenXR IntegrationSDK-1.4.0-20250407 (3)",
       "depth": 0,
       "source": "local",
       "dependencies": {
-        "com.unity.xr.management": "4.0.0",
-        "com.unity.xr.interaction.toolkit": "2.0.0",
-        "com.unity.xr.core-utils": "2.3.0"
+        "com.unity.xr.core-utils": "2.2.0",
+        "com.unity.xr.openxr": "1.8.2"
       }
     },
     "jp.keijiro.klak.ndi": {
