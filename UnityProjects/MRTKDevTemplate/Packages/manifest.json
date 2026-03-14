@@ -27,6 +27,7 @@
     "com.unity.xr.management": "4.4.0",
     "com.unity.xr.meta-openxr": "1.0.4",
     "com.unity.xr.openxr": "1.14.3",
+    "com.unity.xr.picoxr": "file:C:/Users/kilia/Downloads/PICO Unity Integration SDK-3.4.0-20260226",
     "jp.keijiro.klak.ndi": "2.1.6",
     "org.mixedrealitytoolkit.accessibility": "file:../../../org.mixedrealitytoolkit.accessibility",
     "org.mixedrealitytoolkit.audio": "file:../../../org.mixedrealitytoolkit.audio",

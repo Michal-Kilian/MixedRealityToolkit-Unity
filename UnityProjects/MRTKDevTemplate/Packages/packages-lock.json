@@ -348,6 +348,16 @@
       },
       "url": "https://packages.unity.com"
     },
+    "com.unity.xr.picoxr": {
+      "version": "file:C:/Users/kilia/Downloads/PICO Unity Integration SDK-3.4.0-20260226",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {
+        "com.unity.xr.management": "4.0.0",
+        "com.unity.xr.interaction.toolkit": "2.0.0",
+        "com.unity.xr.core-utils": "2.3.0"
+      }
+    },
     "jp.keijiro.klak.ndi": {
       "version": "2.1.6",
       "depth": 0,
