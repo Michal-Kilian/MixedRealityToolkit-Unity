@@ -26,8 +26,11 @@ public enum InteractionType
     CityFloorOpenInIDE          = 1 << 10,
     CityDistrictHide            = 1 << 11,
 
-    ActivityMapMethodSelect     = 1 << 12,
-    ActivityMapMethodHover      = 1 << 13,
+    FlameGraphMethodSelect      = 1 << 12,
+    FlameGraphMethodHover       = 1 << 13,
+
+    ActivityMapMethodSelect     = 1 << 14,
+    ActivityMapMethodHover      = 1 << 15,
 
     All =
         CityFloorSelect |
@@ -41,6 +44,8 @@ public enum InteractionType
         CityDestroy |
         CityFloorOpenInIDE |
         CityDistrictHide |
+        FlameGraphMethodSelect |
+        FlameGraphMethodHover |
         ActivityMapMethodSelect |
         ActivityMapMethodHover
 }

@@ -36,7 +36,7 @@ public class ActivityMap : MonoBehaviour
 
     private void Awake() => Instance = this;
 
-    public bool IsDisplayed() => transform.childCount > 0;
+    public bool IsDisplayed() => transform.childCount > 2;
 
     public void SetValidMethods(IEnumerable<string> methods)
     {

@@ -51,7 +51,7 @@ public class FlameGraph : MonoBehaviour
 
     private void Awake() => Instance = this;
 
-    public bool IsDisplayed() => transform.childCount > 0;
+    public bool IsDisplayed() => transform.childCount > 2;
 
     public void SetValidMethods(IEnumerable<string> methods)
     {
@@ -115,7 +115,7 @@ public class FlameGraph : MonoBehaviour
 
         float scaledLayerHeight = layerHeight * vScale;
         float scaledSpacing = verticalSpacing * vScale;
-        float y = depth * (scaledLayerHeight + scaledSpacing);
+        float y = depth * (scaledLayerHeight + scaledSpacing) - 0.5f;
 
         float cursor = startX;
 

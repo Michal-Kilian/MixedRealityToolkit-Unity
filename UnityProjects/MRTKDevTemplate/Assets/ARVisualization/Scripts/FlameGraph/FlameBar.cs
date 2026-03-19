@@ -6,14 +6,9 @@ using UnityEngine.XR.Interaction.Toolkit;
 [RequireComponent(typeof(Renderer), typeof(LineRenderer))]
 public class FlameBar : MonoBehaviour
 {
-    [Header("Interaction")]
     [SerializeField] private float clickThreshold = 0.3f;
-
-    [Header("Tooltip")]
     [SerializeField] private GameObject tooltipPrefab;
     [SerializeField] private string tooltipOriginTag = "FlameGraphTooltipOrigin";
-
-    [Header("Connection")]
     [SerializeField] private LineRenderer lineRenderer;
     [SerializeField] private Material lineMaterial;
     [SerializeField] private float lineWidth = 0.01f;
@@ -166,6 +161,11 @@ public class FlameBar : MonoBehaviour
 
     private void OnHoverEntered(HoverEnterEventArgs arg0)
     {
+        ExperimentManager.Instance.LogInteraction(
+            InteractionType.FlameGraphMethodHover,
+            methodName: methodKey
+        );
+
         ToggleTooltip(true);
     }
 
@@ -202,6 +202,11 @@ public class FlameBar : MonoBehaviour
         float heldTime = Time.time - selectStartTime;
         if (heldTime < clickThreshold)
         {
+            ExperimentManager.Instance.LogInteraction(
+                InteractionType.FlameGraphMethodSelect,
+                methodName: methodKey
+            );
+
             ViewInCity();
         }
     }
@@ -238,9 +243,13 @@ public class FlameBar : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (isLineActive && targetMethodCallTransform != null)
+        if (isLineActive && targetMethodCallTransform != null && ProjectCity.Instance.IsDisplayed())
         {
             UpdateLineConnection();
+        }
+        else if (lineRenderer != null)
+        {
+            UIManager.UnregisterFlameLineConnection(lineRenderer);
         }
     }
 

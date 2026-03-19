@@ -190,9 +190,13 @@ public class MethodActivityTile : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (isLineActive && targetFloorTransform != null)
+        if (isLineActive && targetFloorTransform != null && ProjectCity.Instance.IsDisplayed())
         {
             UpdateLineConnection();
+        }
+        else if (lineRenderer != null)
+        {
+            UIManager.UnregisterLineConnection(lineRenderer);
         }
     }
 

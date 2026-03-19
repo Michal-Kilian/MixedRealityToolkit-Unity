@@ -52,7 +52,7 @@ public class ProjectCity : MonoBehaviour
         set => paused = value;
     }
 
-    public bool IsDisplayed() => transform.childCount > 0;
+    public bool IsDisplayed() => transform.childCount > 1;
 
     private void Awake()
     {
@@ -76,6 +76,7 @@ public class ProjectCity : MonoBehaviour
     {
         foreach (Transform child in transform)
         {
+            if (child.gameObject.name.Contains("BoundingBox")) continue;
             Destroy(child.gameObject);
         }
 
@@ -405,6 +406,7 @@ public class ProjectCity : MonoBehaviour
     {
         foreach (Transform child in transform)
         {
+            if (child.gameObject.name.Contains("BoundingBox")) continue;
             Destroy(child.gameObject);
         }
 
