@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 
 public class ActivityMap : MonoBehaviour
@@ -45,14 +46,12 @@ public class ActivityMap : MonoBehaviour
 
     public void OnExecutionSample(ExecutionSample sample)
     {
-        Debug.Log("ExecutionSample runs");
-
         if (paused) return;
 
         foreach (var f in sample.Frames)
         {
             string key = $"{f.ClassName}.{f.Method}";
-            //if (!validMethods.Contains(key)) continue;
+            if (!validMethods.Contains(key)) continue;
 
             totalCalls[key] = totalCalls.GetValueOrDefault(key, 0) + 1;
             if (totalCalls[key] > globalMax) globalMax = totalCalls[key];
@@ -96,7 +95,7 @@ public class ActivityMap : MonoBehaviour
             float flash = liveHeat.GetValueOrDefault(key, 0f);
             double total = totalCalls[key];
 
-            tileGO.GetComponent<MethodActivityTile>().SetVisual(rect, flash);
+            tileGO.GetComponent<MethodActivityTile>().SetVisual(rect, flash, (int)total);
         }
     }
 

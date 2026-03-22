@@ -220,13 +220,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7602d9ff441014745bd777e121cdc7a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clickThreshold: 0.3
-  coloring: 0
+  clickThreshold: 0.5
   tooltipPrefab: {fileID: 53208675032498891, guid: 0a45cd98a94ac534aa9a1307d9ec729e, type: 3}
   tooltipOriginTag: FlameGraphTooltipOrigin
   lineRenderer: {fileID: 8024818744440546708}
   lineMaterial: {fileID: 2100000, guid: 952f64edfabb239448dce74abcc2da9f, type: 2}
   lineWidth: 0.01
+  heatDecayPerSecond: 0.1
+  heatBoost: 0.5
+  minHeat: 0.1
 --- !u!33 &1597259905309693430
 MeshFilter:
   m_ObjectHideFlags: 0

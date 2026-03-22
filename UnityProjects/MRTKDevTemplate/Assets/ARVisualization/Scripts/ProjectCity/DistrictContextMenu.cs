@@ -9,15 +9,12 @@ public class DistrictContextMenu : MonoBehaviour
     [SerializeField] private TMP_Text packageLabel;
     [SerializeField] private PressableButton hideDistrictButton;
     [SerializeField] private PressableButton closeButton;
-    [SerializeField] private float clickThreshold = 0.3f;
     [SerializeField] private RawImage hideDistrictImage;
     [SerializeField] private Color enabledColor;
     [SerializeField] private Color disabledColor;
 
     private District targetDistrict;
     private Camera mainCamera;
-    private float hideDistrictSelectStartTime;
-    private float closeSelectStartTime;
 
     private bool hideDistrictEnabled = false;
 
@@ -26,9 +23,7 @@ public class DistrictContextMenu : MonoBehaviour
         mainCamera = Camera.main;
 
         hideDistrictButton.selectEntered.AddListener(HideDistrictSelectEntered);
-        hideDistrictButton.selectExited.AddListener(HideDistrictSelectExited);
         closeButton.selectEntered.AddListener(OnCloseSelectEntered);
-        closeButton.selectExited.AddListener(OnCloseSelectExited);
     }
 
     public void Initialize(District district)
@@ -65,32 +60,14 @@ public class DistrictContextMenu : MonoBehaviour
 
     private void HideDistrictSelectEntered(SelectEnterEventArgs arg0)
     {
-        hideDistrictSelectStartTime = Time.time;
-    }
-
-    private void HideDistrictSelectExited(SelectExitEventArgs arg0)
-    {
-        float heldTime = Time.time - hideDistrictSelectStartTime;
-        if (heldTime < clickThreshold)
-        {
-            if (!hideDistrictEnabled) return;
-            HideDistrict();
-            Close();
-        }
+        if (!hideDistrictEnabled) return;
+        HideDistrict();
+        Close();
     }
 
     private void OnCloseSelectEntered(SelectEnterEventArgs arg0)
     {
-        closeSelectStartTime = Time.time;
-    }
-
-    private void OnCloseSelectExited(SelectExitEventArgs arg0)
-    {
-        float heldTime = Time.time - closeSelectStartTime;
-        if (heldTime < clickThreshold)
-        {
-            Close();
-        }
+        Close();
     }
 
     public void HideDistrict()

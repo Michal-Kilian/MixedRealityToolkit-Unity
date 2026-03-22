@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8ae341977428a844ab471fe20e6db9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clickThreshold: 0.3
+  clickThreshold: 0.5
   tooltipPrefab: {fileID: 53208675032498891, guid: b6ef552830f7e1a4d982a8aed7cf2edc, type: 3}
   tooltipOriginTag: ActivityMapTooltipOrigin
   lineRenderer: {fileID: 4088214672438775329}

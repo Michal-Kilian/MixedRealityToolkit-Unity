@@ -687,7 +687,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shouldConnect: 1
-  serverHost: 192.168.88.40
+  serverHost: localhost
   serverPort: 8765
   uiManager: {fileID: 1614698176}
   heartbeatInterval: 3
@@ -907,6 +907,7 @@ MonoBehaviour:
   boundsControl: {fileID: 1308133584}
   boxCollider: {fileID: 1308133585}
   additionalRotation: {x: 0, y: 0, z: 0}
+  objectManipulator: {fileID: 0}
 --- !u!114 &251758181
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4519,7 +4520,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e312a47c5ca3e854abdc9b2eb0c3a0a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  folderRelativePath: ARVisualization/Samples
+  folderRelativePath: Samples
   intervalSeconds: 1
 --- !u!4 &1324932458
 Transform:
@@ -5170,7 +5171,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5092507606858315802, guid: c25d8f2d22117bd40ad824684551fbde, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5395437305160795575, guid: c25d8f2d22117bd40ad824684551fbde, type: 3}
       propertyPath: m_LocalScale.x
@@ -5289,9 +5290,10 @@ MonoBehaviour:
   spriteRenderer: {fileID: 1532218802}
   lockedSprite: {fileID: 21300000, guid: 314683cca5e417b43924e07f86de60c9, type: 3}
   unlockedSprite: {fileID: 21300000, guid: c6c47a3be151e3a49b453e77e8c8ad08, type: 3}
-  boundsControl: {fileID: 1666358803}
-  boxCollider: {fileID: 1666358805}
+  boundsControl: {fileID: 1666358813}
+  boxCollider: {fileID: 1666358815}
   additionalRotation: {x: 0, y: 0, z: 0}
+  objectManipulator: {fileID: 0}
 --- !u!1001 &1570158200
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5779,6 +5781,54 @@ PrefabInstance:
       propertyPath: allowedInteractionTypes
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2947425199101615416, guid: 51a91df76247497428b7f5e562aa59fa, type: 3}
+      propertyPath: isRaySelected.onExited.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2947425199101615416, guid: 51a91df76247497428b7f5e562aa59fa, type: 3}
+      propertyPath: isRaySelected.onExited.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2947425199101615416, guid: 51a91df76247497428b7f5e562aa59fa, type: 3}
+      propertyPath: isGrabSelected.onExited.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2947425199101615416, guid: 51a91df76247497428b7f5e562aa59fa, type: 3}
+      propertyPath: isGrabSelected.onExited.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2947425199101615416, guid: 51a91df76247497428b7f5e562aa59fa, type: 3}
+      propertyPath: isRaySelected.onEntered.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2947425199101615416, guid: 51a91df76247497428b7f5e562aa59fa, type: 3}
+      propertyPath: isRaySelected.onEntered.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2947425199101615416, guid: 51a91df76247497428b7f5e562aa59fa, type: 3}
+      propertyPath: isGrabSelected.onEntered.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2947425199101615416, guid: 51a91df76247497428b7f5e562aa59fa, type: 3}
+      propertyPath: isGrabSelected.onEntered.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2947425199101615416, guid: 51a91df76247497428b7f5e562aa59fa, type: 3}
+      propertyPath: isGazePinchSelected.onExited.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2947425199101615416, guid: 51a91df76247497428b7f5e562aa59fa, type: 3}
+      propertyPath: isGazePinchSelected.onExited.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2947425199101615416, guid: 51a91df76247497428b7f5e562aa59fa, type: 3}
+      propertyPath: isGazePinchSelected.onEntered.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2947425199101615416, guid: 51a91df76247497428b7f5e562aa59fa, type: 3}
+      propertyPath: isGazePinchSelected.onEntered.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 3561159394255871243, guid: 51a91df76247497428b7f5e562aa59fa, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -5936,7 +5986,12 @@ PrefabInstance:
       value: ConnectionPanel
       objectReference: {fileID: 0}
     m_RemovedComponents:
-    - {fileID: 2831582075000687983, guid: 51a91df76247497428b7f5e562aa59fa, type: 3}
+    - {fileID: 3865854022214133783, guid: 51a91df76247497428b7f5e562aa59fa, type: 3}
+    - {fileID: 8740846173712412951, guid: 51a91df76247497428b7f5e562aa59fa, type: 3}
+    - {fileID: 3745352341031418468, guid: 51a91df76247497428b7f5e562aa59fa, type: 3}
+    - {fileID: 2947425199101615416, guid: 51a91df76247497428b7f5e562aa59fa, type: 3}
+    - {fileID: 5893395994857382409, guid: 51a91df76247497428b7f5e562aa59fa, type: 3}
+    - {fileID: 2658197270472131156, guid: 51a91df76247497428b7f5e562aa59fa, type: 3}
     m_RemovedGameObjects:
     - {fileID: 6186561062308014161, guid: 51a91df76247497428b7f5e562aa59fa, type: 3}
     m_AddedGameObjects:
@@ -5958,7 +6013,16 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 9006359617616037770, guid: 51a91df76247497428b7f5e562aa59fa, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1666358805}
+      addedObject: {fileID: 1666358814}
+    - targetCorrespondingSourceObject: {fileID: 9006359617616037770, guid: 51a91df76247497428b7f5e562aa59fa, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1666358813}
+    - targetCorrespondingSourceObject: {fileID: 9006359617616037770, guid: 51a91df76247497428b7f5e562aa59fa, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1666358815}
+    - targetCorrespondingSourceObject: {fileID: 9006359617616037770, guid: 51a91df76247497428b7f5e562aa59fa, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1666358816}
     - targetCorrespondingSourceObject: {fileID: 4931824463500530804, guid: 51a91df76247497428b7f5e562aa59fa, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
@@ -5972,23 +6036,76 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 51a91df76247497428b7f5e562aa59fa, type: 3}
---- !u!114 &1666358803 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3745352341031418468, guid: 51a91df76247497428b7f5e562aa59fa, type: 3}
-  m_PrefabInstance: {fileID: 1666358802}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1666358804}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f3f2652d4ff14543be4d1ece28036a0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1666358804 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 9006359617616037770, guid: 51a91df76247497428b7f5e562aa59fa, type: 3}
   m_PrefabInstance: {fileID: 1666358802}
   m_PrefabAsset: {fileID: 0}
---- !u!65 &1666358805
+--- !u!114 &1666358813
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1666358804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f3f2652d4ff14543be4d1ece28036a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boundsVisualsPrefab: {fileID: 5671351296789090341, guid: 10ec5e459f955e6439700ed7d69f5a78, type: 3}
+  boundsCalculationMethod: 2
+  includeInactiveObjects: 0
+  overrideBounds: 0
+  boundsOverride: {fileID: 0}
+  flattenMode: 1
+  boundsPadding: 0.01
+  interactable: {fileID: 0}
+  toggleHandlesOnClick: 0
+  dragToggleThreshold: 0.02
+  target: {fileID: 1644250479}
+  handlesActive: 0
+  enabledHandles: 3
+  rotateAnchor: 1
+  scaleAnchor: 0
+  scaleBehavior: 0
+  smoothingActive: 1
+  rotateLerpTime: 0.00001
+  scaleLerpTime: 0.00001
+  translateLerpTime: 0.00001
+  enableConstraints: 1
+  constraintsManager: {fileID: 0}
+  manipulationLogicTypes:
+    moveLogicType:
+      reference: MixedReality.Toolkit.SpatialManipulation.BoundsControlMoveLogic,
+        MixedReality.Toolkit.SpatialManipulation
+    rotateLogicType:
+      reference: MixedReality.Toolkit.SpatialManipulation.BoundsControlRotateLogic,
+        MixedReality.Toolkit.SpatialManipulation
+    scaleLogicType:
+      reference: MixedReality.Toolkit.SpatialManipulation.BoundsControlScaleLogic,
+        MixedReality.Toolkit.SpatialManipulation
+  manipulationStarted:
+    m_PersistentCalls:
+      m_Calls: []
+  manipulationEnded:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &1666358814
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1666358804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50cdab0cd5a0916419324bb54314773d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  autoConstraintSelection: 1
+  selectedConstraints: []
+--- !u!65 &1666358815
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6007,8 +6124,253 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 0
   serializedVersion: 3
-  m_Size: {x: 0.6, y: 0.3, z: 0.1}
-  m_Center: {x: -0.025, y: -0.035, z: 0}
+  m_Size: {x: 0.6, y: 0.3, z: 0.05}
+  m_Center: {x: -0.025, y: -0.032, z: 0}
+--- !u!114 &1666358816
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1666358804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9ad66e7cc9a2754d8ea989740c9f00d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_InteractionManager: {fileID: 0}
+  m_Colliders: []
+  m_InteractionLayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_InteractionLayers:
+    m_Bits: 1
+  m_DistanceCalculationMode: 1
+  m_SelectMode: 1
+  m_FocusMode: 1
+  m_CustomReticle: {fileID: 0}
+  m_AllowGazeInteraction: 0
+  m_AllowGazeSelect: 0
+  m_OverrideGazeTimeToSelect: 0
+  m_GazeTimeToSelect: 0.5
+  m_OverrideTimeToAutoDeselectGaze: 0
+  m_TimeToAutoDeselectGaze: 3
+  m_AllowGazeAssistance: 0
+  m_FirstHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstSelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastSelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstFocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastFocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Activated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Deactivated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_StartingHoverFilters: []
+  m_StartingSelectFilters: []
+  m_StartingInteractionStrengthFilters: []
+  m_OnFirstHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnLastHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnSelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnSelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnSelectCanceled:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnActivate:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnDeactivate:
+    m_PersistentCalls:
+      m_Calls: []
+  isGazePinchSelected:
+    active: 0
+    onEntered:
+      m_PersistentCalls:
+        m_Calls: []
+    onExited:
+      m_PersistentCalls:
+        m_Calls: []
+  isRaySelected:
+    active: 0
+    onEntered:
+      m_PersistentCalls:
+        m_Calls: []
+    onExited:
+      m_PersistentCalls:
+        m_Calls: []
+  isPokeSelected:
+    active: 0
+    onEntered:
+      m_PersistentCalls:
+        m_Calls: []
+    onExited:
+      m_PersistentCalls:
+        m_Calls: []
+  isGrabSelected:
+    active: 0
+    onEntered:
+      m_PersistentCalls:
+        m_Calls: []
+    onExited:
+      m_PersistentCalls:
+        m_Calls: []
+  isGazeHovered:
+    active: 0
+    onEntered:
+      m_PersistentCalls:
+        m_Calls: []
+    onExited:
+      m_PersistentCalls:
+        m_Calls: []
+  isGazePinchHovered:
+    active: 0
+    onEntered:
+      m_PersistentCalls:
+        m_Calls: []
+    onExited:
+      m_PersistentCalls:
+        m_Calls: []
+  isRayHovered:
+    active: 0
+    onEntered:
+      m_PersistentCalls:
+        m_Calls: []
+    onExited:
+      m_PersistentCalls:
+        m_Calls: []
+  isGrabHovered:
+    active: 0
+    onEntered:
+      m_PersistentCalls:
+        m_Calls: []
+    onExited:
+      m_PersistentCalls:
+        m_Calls: []
+  isPokeHovered:
+    active: 0
+    onEntered:
+      m_PersistentCalls:
+        m_Calls: []
+    onExited:
+      m_PersistentCalls:
+        m_Calls: []
+  isActiveHovered:
+    active: 0
+    onEntered:
+      m_PersistentCalls:
+        m_Calls: []
+    onExited:
+      m_PersistentCalls:
+        m_Calls: []
+  disabledInteractorTypes:
+  - reference: MixedReality.Toolkit.IPokeInteractor, MixedReality.Toolkit.Core
+  <ToggleMode>k__BackingField: 0
+  <SelectThreshold>k__BackingField: 0.9
+  <DeselectThreshold>k__BackingField: 0.1
+  <TriggerOnRelease>k__BackingField: 1
+  <UseGazeDwell>k__BackingField: 0
+  <GazeDwellTime>k__BackingField: 1
+  <UseFarDwell>k__BackingField: 0
+  <FarDwellTime>k__BackingField: 1
+  allowSelectByVoice: 1
+  speechRecognitionKeyword: select
+  <OnSpeechRecognitionKeywordChanged>k__BackingField:
+    m_PersistentCalls:
+      m_Calls: []
+  <VoiceRequiresFocus>k__BackingField: 1
+  <SelectRequiresHover>k__BackingField: 0
+  <IsToggled>k__BackingField:
+    active: 0
+    onEntered:
+      m_PersistentCalls:
+        m_Calls: []
+    onExited:
+      m_PersistentCalls:
+        m_Calls: []
+  <OnClicked>k__BackingField:
+    m_PersistentCalls:
+      m_Calls: []
+  <OnEnabled>k__BackingField:
+    m_PersistentCalls:
+      m_Calls: []
+  <OnDisabled>k__BackingField:
+    m_PersistentCalls:
+      m_Calls: []
+  hostTransform: {fileID: 1644250479}
+  allowedManipulations: 1
+  allowedInteractionTypes: -1
+  rigidbodyMovementType: 0
+  applyTorque: 1
+  springForceSoftness: 0.1
+  springTorqueSoftness: 0.1
+  springDamping: 1
+  springForceLimit: 100
+  rotationAnchorNear: 1
+  rotationAnchorFar: 1
+  releaseBehavior: 3
+  transformSmoothingLogicType:
+    reference: MixedReality.Toolkit.SpatialManipulation.DefaultTransformSmoothingLogic,
+      MixedReality.Toolkit.SpatialManipulation
+  smoothingFar: 1
+  smoothingNear: 1
+  moveLerpTime: 0.001
+  rotateLerpTime: 0.001
+  scaleLerpTime: 0.001
+  enableConstraints: 1
+  constraintsManager: {fileID: 0}
+  manipulationLogicTypes:
+    moveLogicType:
+      reference: MixedReality.Toolkit.SpatialManipulation.MoveLogic, MixedReality.Toolkit.SpatialManipulation
+    rotateLogicType:
+      reference: MixedReality.Toolkit.SpatialManipulation.RotateLogic, MixedReality.Toolkit.SpatialManipulation
+    scaleLogicType:
+      reference: MixedReality.Toolkit.SpatialManipulation.ScaleLogic, MixedReality.Toolkit.SpatialManipulation
 --- !u!1 &1670315908 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1214529608091490941, guid: 0d3b2fd2079cd514d8dbce654f929320, type: 3}
@@ -7065,6 +7427,7 @@ MonoBehaviour:
   boundsControl: {fileID: 1624610838}
   boxCollider: {fileID: 1670315913}
   additionalRotation: {x: 0, y: 0, z: 0}
+  objectManipulator: {fileID: 0}
 --- !u!1 &1757760600
 GameObject:
   m_ObjectHideFlags: 0
@@ -8693,6 +9056,7 @@ MonoBehaviour:
   boundsControl: {fileID: 772000988}
   boxCollider: {fileID: 1458234037}
   additionalRotation: {x: 90, y: 0, z: 0}
+  objectManipulator: {fileID: 0}
 --- !u!1001 &381027454164562592
 PrefabInstance:
   m_ObjectHideFlags: 0

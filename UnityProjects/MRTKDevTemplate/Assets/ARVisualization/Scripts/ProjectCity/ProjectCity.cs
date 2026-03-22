@@ -81,6 +81,8 @@ public class ProjectCity : MonoBehaviour
         }
 
         _classBuildings.Clear();
+        _methodFloors.Clear();
+        _baseColors.Clear();
 
         _project = structure;
 
@@ -369,6 +371,8 @@ public class ProjectCity : MonoBehaviour
 
     public GameObject GetMethodFloor(string methodKey)
     {
+        Debug.Log($"Available keys: {string.Join(", ", _methodFloors.Keys)}");
+
         if (_methodFloors.TryGetValue(methodKey, out GameObject floor))
         {
             return floor;

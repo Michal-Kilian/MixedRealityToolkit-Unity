@@ -13,6 +13,7 @@ public class LockUnlockButton : MonoBehaviour
     [SerializeField] private BoundsControl boundsControl;
     [SerializeField] private BoxCollider boxCollider;
     [SerializeField] private Vector3 additionalRotation = new(0f, 0f, 0f);
+    [SerializeField, Tooltip("Fill only for connection panel")] private ObjectManipulator objectManipulator;
 
     private PressableButton button;
 
@@ -68,11 +69,15 @@ public class LockUnlockButton : MonoBehaviour
         {
             boundsControl.HandlesActive = false;
             boxCollider.enabled = false;
+            if (objectManipulator != null)
+                objectManipulator.enabled = false;
         }
         else
         {
             boundsControl.HandlesActive = true;
             boxCollider.enabled = true;
+            if (objectManipulator != null)
+                objectManipulator.enabled = true;
         }
     }
 

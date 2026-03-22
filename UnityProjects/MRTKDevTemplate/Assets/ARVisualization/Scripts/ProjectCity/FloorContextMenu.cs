@@ -12,12 +12,9 @@ public class FloorContextMenu : MonoBehaviour
     [SerializeField] private TMP_Text classLabel;
     [SerializeField] private PressableButton openInIDEButton;
     [SerializeField] private PressableButton closeButton;
-    [SerializeField] private float clickThreshold = 0.3f;
 
     private Floor targetFloor;
     private Camera mainCamera;
-    private float openInIDESelectStartTime;
-    private float closeSelectStartTime;
     private UIManager UIManager;
     
     private void Awake()
@@ -27,9 +24,7 @@ public class FloorContextMenu : MonoBehaviour
         UIManager = FindFirstObjectByType<UIManager>();
 
         openInIDEButton.selectEntered.AddListener(OnOpenInIDESelectEntered);
-        openInIDEButton.selectExited.AddListener(OnOpenInIDESelectExited);
         closeButton.selectEntered.AddListener(OnCloseSelectEntered);
-        closeButton.selectExited.AddListener(OnCloseSelectExited);
     }
 
     public void Initialize(Floor floor)
@@ -58,37 +53,19 @@ public class FloorContextMenu : MonoBehaviour
 
     private void OnOpenInIDESelectEntered(SelectEnterEventArgs arg0)
     {
-        openInIDESelectStartTime = Time.time;
-    }
-
-    private void OnOpenInIDESelectExited (SelectExitEventArgs arg0)
-    {
-        float heldTime = Time.time - openInIDESelectStartTime;
-        if (heldTime < clickThreshold)
-        {
-            ExperimentManager.Instance.LogInteraction(
+        ExperimentManager.Instance.LogInteraction(
                 InteractionType.CityFloorOpenInIDE,
                 targetFloor.packageName,
                 targetFloor.className,
                 targetFloor.methodName
             );
-            OpenInIde();
-            Close();
-        }
+        OpenInIde();
+        Close();
     }
 
     private void OnCloseSelectEntered(SelectEnterEventArgs arg0)
     {
-        closeSelectStartTime = Time.time;
-    }
-
-    private void OnCloseSelectExited(SelectExitEventArgs arg0)
-    {
-        float heldTime = Time.time - closeSelectStartTime;
-        if (heldTime < clickThreshold)
-        {
-            Close();
-        }
+        Close();
     }
 
     public void OpenInIde()

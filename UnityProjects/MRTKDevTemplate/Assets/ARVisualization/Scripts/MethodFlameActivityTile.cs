@@ -6,7 +6,6 @@ using UnityEngine.XR.Interaction.Toolkit;
 [RequireComponent(typeof(LineRenderer))]
 public class MethodFlameActivityTile : MonoBehaviour
 {
-    [SerializeField] private float clickThreshold = 0.3f;
     [SerializeField] private GameObject tooltipPrefab;
     [SerializeField] private string tooltipOriginTag = "ActivityMapTooltipOrigin";
 
@@ -31,8 +30,6 @@ public class MethodFlameActivityTile : MonoBehaviour
     public string MethodName => methodName;
 
     private MRTKBaseInteractable interactable;
-
-    private float selectStartTime;
 
     public static MethodFlameActivityTile CurrentlyClicked {  get; private set; }
     public void RegisterChildLayer(FlameActivityMap layer)
@@ -75,7 +72,6 @@ public class MethodFlameActivityTile : MonoBehaviour
         interactable.hoverEntered.AddListener(OnHoverEntered);
         interactable.hoverExited.AddListener(OnHoverExited);
         interactable.selectEntered.AddListener(OnSelectEntered);
-        interactable.selectExited.AddListener(OnSelectExited);
     }
 
     public void SetVisual(
@@ -144,16 +140,7 @@ public class MethodFlameActivityTile : MonoBehaviour
 
     private void OnSelectEntered(SelectEnterEventArgs arg0)
     {
-        selectStartTime = Time.time;
-    }
-
-    private void OnSelectExited(SelectExitEventArgs arg0)
-    {
-        float heldTime = Time.time - selectStartTime;
-        if (heldTime < clickThreshold)
-        {
-            NextLayer();
-        }
+        NextLayer();
     }
 
     private void NextLayer()

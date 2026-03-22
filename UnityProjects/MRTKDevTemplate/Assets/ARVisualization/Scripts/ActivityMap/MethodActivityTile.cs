@@ -32,6 +32,9 @@ public class MethodActivityTile : MonoBehaviour
 
     private float selectStartTime;
 
+    private int currentCallCount = 0;
+    public int CurrentCallCount => currentCallCount;
+
     private void Awake()
     {
         meshRenderer = GetComponent<MeshRenderer>();
@@ -72,9 +75,12 @@ public class MethodActivityTile : MonoBehaviour
 
     public void SetVisual(
         Rect rect,
-        float flash
+        float flash,
+        int callCount
     )
     {
+        currentCallCount = callCount;
+
         float gapWidth = Mathf.Max(rect.width - tileGap, 0f);
         float gapHeight = Mathf.Max(rect.height - tileGap, 0f);
 
@@ -134,7 +140,7 @@ public class MethodActivityTile : MonoBehaviour
 
         currentTooltip = Instantiate(tooltipPrefab, tooltipOrigin.transform.position, Quaternion.identity);
         var tooltip = currentTooltip.GetComponent<MethodTileTooltip>();
-        tooltip.Initialize(this);
+        tooltip.Initialize(this, includeCallCount: true);
 
         UIManager.RegisterMethodTileTooltip(currentTooltip);
     }

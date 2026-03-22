@@ -13,10 +13,11 @@ public class MethodTileTooltip : MonoBehaviour
         mainCamera = Camera.main;
     }
 
-    public void Initialize(MethodActivityTile methodTile)
+    public void Initialize(MethodActivityTile methodTile, bool includeCallCount = false)
     {
         associatedMethodTile = methodTile;
-        methodLabel.text = methodTile.MethodName;
+        var callCountText = includeCallCount ? $", {methodTile.CurrentCallCount.ToString()}" : "";
+        methodLabel.text = $"{methodTile.MethodName}{callCountText}";
 
         gameObject.transform.localScale = new(
             gameObject.transform.localScale.x / 150f,
